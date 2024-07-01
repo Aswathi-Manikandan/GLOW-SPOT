@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+   <style>
+    body {
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.order-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.order-container h1 {
+    text-align: center;
+    color: #333;
+}
+
+.order-container h2 {
+    color: #555;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+.product-image {
+    width: 50px;
+    height: 50px;
+    
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.product-details {
+    flex: 1;
+}
+
+.product-details h3 {
+    margin: 0;
+    color: #333;
+}
+
+.product-details p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.return-button {
+    padding: 10px 15px;
+    background-color: green;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.return-button:hover {
+    background-color: #e60000;
+}
+
+.address-section {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.address-section h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.cancel-button {
+    display: block;
+    width: 30%;
+    padding: 10px 0;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px 0;
+    transition: background-color 0.5s;
+}
+
+.cancel-button:hover {
+    background-color: #c82333;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    padding: 10px 0;
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.back-link:hover {
+    color: #0056b3;
+}
+
+   </style>
+</head>
+
+<% var loggedin = true; %> <!-- You can set it to true or false based on your logic -->
+<%- include('../layouts/user-header.ejs', { loggedin: loggedin, user: user }) %>
+
+<%- include('../layouts/user-sidebar.ejs') %>
+<body>
+
+    <div class="order-container">
+        <h1>Order Details</h1>
+        <h2>Order ID: <%= order._id %></h2>
+        <h2>Payment Mode: <%= order.paymentMethod %></h2>
+        <% order.products.forEach(product => { %>
+            <div class="product-item">
+                <img src="<%= product.product.pictures[0] %>" alt="<%= product.product.name %>" class="product-image">
+                <div class="product-details">
+                    <h3><%= product.product.name %></h3>
+                    <p>Quantity: <%= product.quantity %></p>
+                    <p>Price: $<%= (product.price * product.quantity).toFixed(2) %></p>
+                    <!-- Inside the forEach loop where return buttons are generated -->
+                    <% if (order.status === 'delivered') { %>
+                        <button class="return-button" data-order-id="<%= order._id %>" data-product-id="<%= product.product._id %>" data-quantity="<%= product.quantity %>">Return</button>
+                    <% } %>
+                </div>
+            </div>
+        <% }); %>
+
+        <div class="address-section">
+            <h3>Shipping Address</h3>
+            <% order.addresses.forEach(address => { %>
+                <p><%= address.street %>, <%= address.city %>, <%= address.state %> <%= address.postalCode %>, <%= address.country %></p>
+            <% }); %>
+        </div>
+
+        <!-- Cancel Order Button -->
+        <% if (order.status !== 'pending') { %>
+            <button id="cancelOrderButton" class="cancel-button">Cancel</button>
+        <% } %>
+
+        <a href="/order" class="back-link">Back to Orders</a>
+    </div>
+
+    <!-- Include SweetAlert CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.getElementById('cancelOrderButton').addEventListener('click', function() {
+            const orderId = '<%= orderId %>';
+            const userId = '<%= userId %>';
+            const refundAmount = '<%= totalAmount %>';
+    
+            if (!userId) {
+                console.error('User data is not available.');
+                return;
+            }
+    
+            // Show confirmation dialog using SweetAlert
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to cancel this order. This action cannot be undone.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#007bff',
+                confirmButtonText: 'Yes, cancel it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/cancel-order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ userId, orderId, refundAmount })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            Swal.fire('Order Canceled!', 'Your order has been successfully canceled.', 'success')
+                                .then(() => {
+                                    window.location.href = '/order';
+                                });
+                        } else {
+                            throw new Error('Failed to cancel order');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire('Error', 'Failed to cancel order. Please try again.', 'error');
+                    });
+                }
+            });
+        });
+    </script>
+    
+    <script>
+        document.querySelectorAll('.return-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const orderId = this.dataset.orderId;
+                const productId = this.dataset.productId;
+                const quantity = this.dataset.quantity;
+    
+                fetch('/return-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ orderId, productId, quantity })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        Swal.fire('Success', 'Order returned successfully', 'success')
+                            .then(() => {
+                                window.location.reload(); // Refresh the page after successful return
+                            });
+                    } else {
+                        throw new Error('Failed to return order');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire('Error', 'Failed to return order. Please try again.', 'error');
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,93 @@
+
+<% var loggedin = true; %> <!-- You can set it to true or false based on your logic -->
+<%- include('../layouts/user-header.ejs', { loggedin: loggedin, user: user }) %>
+<%- include('../layouts/user-sidebar.ejs') %>
+
+<style>
+    /* Add your CSS styles here */
+    .address-item {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .address-container {
+    width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 80px;
+}
+
+.address-item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.address-item p {
+    margin: 5px 0;
+}
+
+.address-item button {
+    background-color: black;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: purple;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    border: none;
+    
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color:purple;
+    color: white;
+}
+
+</style>
+</head>
+<body>
+    <div class="address-container">
+        <h2 style="font-family: 'Times New Roman', Times, serif;">Address Management</h2>
+    
+        <!-- Display Saved Addresses -->
+        <h3 style="font-family: 'Times New Roman', Times, serif;">Saved Addresses</h3>
+        <% if (addresses.length > 0) { %>
+            <% addresses.forEach(address => { %>
+                <div class="address-item">
+                    <p><strong>Street:</strong> <%= address.street %></p>
+                    <p><strong>City:</strong> <%= address.city %></p>
+                    <p><strong>State:</strong> <%= address.state %></p>
+                    <p><strong>Postal Code:</strong> <%= address.postalCode %></p>
+                    <p><strong>Country:</strong> <%= address.country %></p>
+                    <form action="/address/edit/<%= address._id %>" method="GET">
+                        <button type="submit" style="font-family: 'Times New Roman', Times, serif;">Edit</button>
+                    </form>
+                    <form action="/address/delete/<%= address._id %>" method="POST">
+                        <button type="submit" style="font-family: 'Times New Roman', Times, serif;">Delete</button>
+                    </form>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p style="font-family: 'Times New Roman', Times, serif;">No addresses found.</p>
+        <% } %>
+        <div class="add-address-button">
+            <a href="/address/add" class="button">+ Add Address</a>
+        </div>
+    </div>
+    

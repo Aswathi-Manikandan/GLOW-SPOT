@@ -1,0 +1,154 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Edit Coupon</title>
+        <%- include('../layouts/side.ejs') %>
+        <style>
+            
+            /* Custom CSS for the Edit Coupon form */
+
+            body {
+                font-family: 'Times New Roman', Times, serif;
+                background-color: #f4f4f9;
+                margin: 0;
+                padding: 0;
+            }
+
+            .container-fluid {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin-top: 30px;
+            }
+
+            .card {
+                background-color: #ffffff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                max-width: 600px;
+                width: 400%;
+                padding: 20px;
+                margin-right: 530px;
+                margin-top: 50px;
+            }
+
+            .card-title {
+                font-size: 24px;
+                margin-bottom: 20px;
+                text-align: center;
+                color: #333333;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+                color: #555555;
+            }
+
+            .form-control {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #cccccc;
+                border-radius: 4px;
+                font-size: 16px;
+            }
+
+            .form-control:focus {
+                border-color: #1f3144;
+                outline: none;
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+            }
+
+            .btn {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+            .btn-primary {
+                background-color: #1f2d3b;
+                color: #ffffff;
+                margin-right: 8px;
+                font-family: 'Times New Roman', Times, serif;
+            }
+
+            .btn-primary:hover {
+                background-color: #192430;
+            }
+
+            .btn-secondary {
+                background-color: #6c757d;
+                color: #ffffff;
+                font-family: 'Times New Roman', Times, serif;
+            }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+            }
+
+            .btn:focus {
+                outline: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid page-body-wrapper">
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Edit Coupon</h4>
+                            <% if (errors && errors.length > 0) { %>
+                                <div class="alert alert-danger" role="alert">
+                                    <% errors.forEach(error => { %>
+                                        <p><%= error %></p>
+                                    <% }); %>
+                                </div>
+                            <% } %>
+                            <form class="forms-sample" method="POST" action="/admin/coupons/edit/<%= coupon._id %>">
+                                <div class="form-group">
+                                    <label for="couponName">Coupon Name</label>
+                                    <input type="text" class="form-control" id="couponName" name="couponName" value="<%= coupon.couponName %>" required>
+                                    <% /* Add error handling for couponName */ %>
+                                </div>
+                                <div class="form-group">
+                                    <label for="couponCode">Coupon Code</label>
+                                    <input type="text" class="form-control" id="couponCode" name="couponCode" value="<%= coupon.couponCode %>" required>
+                                    <% /* Add error handling for couponCode */ %>
+                                </div>
+                                <div class="form-group">
+                                    <label for="discountPercent">Discount Percentage</label>
+                                    <input type="number" class="form-control" id="discountPercent" name="discountPercent" value="<%= coupon.discountPercent %>" min="1" max="100" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="minAmount">Minimum Amount</label>
+                                    <input type="number" class="form-control" id="minAmount" name="minAmount" value="<%= coupon.minAmount %>" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="couponDescription">Coupon Description</label>
+                                    <textarea class="form-control" id="couponDescription" name="couponDescription" rows="4" required><%= coupon.couponDescription %></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="expiryDate">Expiry Date</label>
+                                    <input type="date" class="form-control" id="expiryDate" name="expiryDate" value="<%= coupon.expiryDate.toISOString().substr(0,10) %>" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a href="/admin/coupons" class="btn btn-secondary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>

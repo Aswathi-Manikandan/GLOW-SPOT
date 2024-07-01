@@ -1,0 +1,253 @@
+<% var loggedin = true; %> <!-- You can set it to true or false based on your logic -->
+<%- include('../layouts/user-header.ejs', { loggedin: loggedin, user: user }) %>
+
+<%- include('../layouts/user-sidebar.ejs') %>
+<div class="content text-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card border-primary" style="font-size: 16px;">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0" style="font-size: 24px;">User Profile</h3>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group row">
+                                <label for="name" class="col-sm-4 col-form-label text-right" style="font-size: 18px;">Name:</label>
+                                <div class="col-sm-8">
+                                    <span id="name" style="font-size: 18px;"><%= user.name %></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="contact" class="col-sm-4 col-form-label text-right" style="font-size: 18px;">Contact:</label>
+                                <div class="col-sm-8">
+                                    <span id="contact" style="font-size: 18px;"><%= user.mobile %></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="email" class="col-sm-4 col-form-label text-right" style="font-size: 18px;">Email:</label>
+                                <div class="col-sm-8">
+                                    <span id="email" style="font-size: 18px;"><%= user.email %></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                        <!-- Button trigger modal for edit profile -->
+                        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#editProfileModal" style="font-size: 18px;">
+                            Edit Profile
+                        </button>
+                        <!-- Button trigger modal for change password -->
+                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#changePasswordModal" style="font-size: 18px;">
+                            Change Password
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background-color: rgba(255, 255, 255, 0.9);">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm" action="/profile/update" method="POST">
+                    <div class="form-group">
+                        <label for="editName">Name:</label>
+                        <input type="text" id="editName" name="name" value="<%= user.name %>" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editContact">Contact:</label>
+                        <input type="tel" id="editContact" name="contact" value="<%= user.mobile %>" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmail">Email:</label>
+                        <input type="email" id="editEmail" name="email" value="<%= user.email %>" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background-color: rgba(255, 255, 255, 0.9);">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm" action="/change-password" method="POST">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password:</label>
+                        <input type="password" id="currentPassword" name="currentPassword" class="form-control" required>
+                        <div id="currentPasswordError" class="error-message" style="display:none;color:#ff4d4d;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password:</label>
+                        <input type="password" id="newPassword" name="newPassword" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password:</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="changePasswordButton" disabled>Change Password</button>
+                </form>
+                <div class="checkbox-group mt-3">
+                    <label>
+                        <input type="checkbox" name="lowercase" id="lowercase"> Contains lowercase letter
+                    </label>
+                    <label>
+                        <input type="checkbox" name="special" id="special"> Contains special character
+                    </label>
+                    <label>
+                        <input type="checkbox" name="length" id="length"> Minimum 8 characters
+                    </label>
+                </div>
+                <div id="error" class="error-message" style="display:none;color:#ff4d4d;"></div>
+                <div id="warning" class="warning-message" style="display:none;color:#ffa500;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SweetAlert CSS & JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Font Awesome JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+
+<script>
+    const passwordInput = document.getElementById('newPassword');
+    const lowercaseCheckbox = document.getElementById('lowercase');
+    const specialCheckbox = document.getElementById('special');
+    const lengthCheckbox = document.getElementById('length');
+    const errorDiv = document.getElementById('error');
+    const warningDiv = document.getElementById('warning');
+    const changePasswordButton = document.getElementById('changePasswordButton');
+    const currentPasswordInput = document.getElementById('currentPassword');
+    const currentPasswordError = document.getElementById('currentPasswordError');
+
+    // Function to check if new password meets criteria
+    function checkPasswordCriteria(password) {
+        const hasLowercase = /[a-z]/.test(password);
+        const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+        const hasLength = password.length >= 8;
+
+        lowercaseCheckbox.checked = hasLowercase;
+        specialCheckbox.checked = hasSpecial;
+        lengthCheckbox.checked = hasLength;
+
+        if (!hasLowercase || !hasSpecial || !hasLength) {
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = 'Password must contain at least one lowercase letter, one special character, and be at least 8 characters long.';
+            changePasswordButton.disabled = true;
+        } else {
+            errorDiv.style.display = 'none';
+            changePasswordButton.disabled = false;
+        }
+    }
+
+    // Check password criteria on input
+    passwordInput.addEventListener('input', function () {
+        checkPasswordCriteria(passwordInput.value);
+    });
+
+    // Handle profile update form submission
+    $('#editProfileForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            success: function(response) {
+                Swal.fire({
+                    title: 'Profile Updated',
+                    text: 'Your profile has been updated successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    location.reload();
+                });
+            },
+            error: function(error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'There was an error updating your profile. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+
+    // Handle password change form submission
+    $('#changePasswordForm').on('submit', function(e) {
+        e.preventDefault();
+        const password = passwordInput.value;
+        checkPasswordCriteria(password);
+
+        if (!changePasswordButton.disabled) {
+            errorDiv.style.display = 'none';
+
+            const currentPassword = currentPasswordInput.value;
+            if (currentPassword === 'password123') {
+                currentPasswordError.style.display = 'block';
+                currentPasswordError.innerHTML = 'Incorrect current password.';
+            } else {
+                currentPasswordError.style.display = 'none';
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Password Changed',
+                            text: 'Your password has been changed successfully.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function(error) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'There was an error changing your password. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        } else {
+            e.preventDefault(); // Prevent form submission
+        }
+    });
+
+    // Initially hide the error and warning messages
+    errorDiv.style.display = 'none';
+    warningDiv.style.display = 'none';
+    currentPasswordError.style.display = 'none';
+</script>
+
+</body>
+</html>

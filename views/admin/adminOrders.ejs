@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../layouts/side.ejs') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Orders</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        table {
+            width: 150%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: #fff;
+        }
+
+        td:first-child {
+           
+            font-weight: bold;
+        }
+
+        .address {
+            font-style: italic;
+            color: #666;
+        }
+
+        .action-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #ecf0f1;
+            font-size: 14px;
+        }
+
+        .status-column {
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: #333;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            margin: 0 5px;
+            border-radius: 4px;
+            background-color: #fff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination a.active {
+            background-color: #27ae60;
+            color: white;
+            border: 1px solid #27ae60;
+        }
+
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+
+        @media only screen and (max-width: 768px) {
+            table {
+                font-size: 12px;
+            }
+            .address p {
+                font-size: 10px;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Orders</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>User</th>
+                    <th>Addresses</th>
+                    <th>Payment Method</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>Final Price</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach(order => { %>
+                    <% order.products.forEach((product, index) => { %>
+                        <tr>
+                            <% if (index === 0) { %>
+                                <td rowspan="<%= order.products.length %>"><%= order.orderId %></td>
+                                <td rowspan="<%= order.products.length %>"><%= order.user %></td>
+                                <td class="address" rowspan="<%= order.products.length %>">
+                                    <% order.addresses.forEach(address => { %>
+                                        <p><%= address.street %>, <%= address.city %>, <%= address.state %> <%= address.postalCode %>, <%= address.country %></p>
+                                    <% }); %>
+                                </td>
+                                <td rowspan="<%= order.products.length %>"><%= order.paymentMethod %></td>
+                            <% } %>
+                            <td><%= product.name || 'Product Not Found' %></td>
+                            <td>$<%= (product.price).toFixed(2) %></td>
+                            <% if (index === 0) { %>
+                                <td rowspan="<%= order.products.length %>">$<%= order.discountAmount %></td>
+                                <td rowspan="<%= order.products.length %>">$<%= order.finalPrice %></td>
+                            <% } %>
+                            <td><%= product.quantity %></td>
+                            <% if (index === 0) { %>
+                                <td class="status-column" rowspan="<%= order.products.length %>" id="status_<%= order.orderId %>">
+                                    <%= order.status %>
+                                </td>
+                                <td rowspan="<%= order.products.length %>">
+                                    <select class="action-select" onchange="updateOrderStatus('<%= order.orderId %>', this.value)">
+                                        <option value="placed" <%= order.status === 'placed' ? 'selected' : '' %>>Placed</option>
+                                        <option value="shipping" <%= order.status === 'shipping' ? 'selected' : '' %>>Shipping</option>
+                                        <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
+                                    </select>
+                                </td>
+                            <% } %>
+                        </tr>
+                    <% }); %>
+                <% }); %>
+            </tbody>
+        </table>
+        <div class="pagination">
+            <% for(let i = 1; i <= totalPages; i++) { %>
+                <a href="?page=<%= i %>" class="<%= currentPage == i ? 'active' : '' %>"><%= i %></a>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        function updateOrderStatus(orderId, newStatus) {
+            fetch('/admin/orders/update-order-status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId, newStatus })
+            })
+            .then(response => {
+                if (response.ok) {
+                    const statusColumn = document.getElementById('status_' + orderId);
+                    statusColumn.textContent = newStatus;
+                    console.log('Order status updated successfully.');
+                } else {
+                    console.error('Failed to update order status.');
+                }
+            })
+            .catch(error => console.error('Error updating order status:', error));
+        }
+    </script>
+</body>
+</html>

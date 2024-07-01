@@ -1,0 +1,104 @@
+<% include('../layouts/header.ejs')%>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #948b8b;
+    }
+
+    .container {
+        margin: 50px auto;
+        background-color: #eeafaf;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 50%; 
+        max-width: 400px; /* Adjust the maximum width as needed */
+    }
+
+    .head {
+        background-color: #324b5c;
+        padding: 15px;
+        text-align: center;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    h3 {
+        color: white;
+        font-size: 1.5rem;
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+    }
+
+    .main {
+        display: flex;
+        flex-direction: column;
+    }
+
+    input {
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .singpage {
+        width: calc(100% - 20px);
+    }
+
+    .btns {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .buttons {
+        background-color: #c3e2f6;
+        color: rgb(63, 50, 50);
+        padding: 12px 25px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .error {
+        color: red;
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<form action="/admin/adduser" method="post">
+    <div class="container">
+        <div class="head">
+            <h3>Add User</h3>
+        </div>
+        <div class="main">
+            <div>
+                <input class="name" type="text" name="name" placeholder="First Name" required>
+            </div>
+        </div>
+        <br>
+        <input class="singpage" type="email" name="email" placeholder=" Email" required>
+        <br>
+        <br>
+        <input class="singpage" type="text" name="mobile" placeholder="Phone Number" required>
+        <br>
+        <br>
+        <div class="btns">
+            <button class="buttons" type="submit">Add user</button>
+        </div>
+    </div>
+    <div class="error">
+        <% if(locals.message) { %>
+        <h4 id="error-text"><%= locals.message %></h4>
+        <% } %>
+    </div>
+</form>
+
+<% include('../layouts/footer.ejs')%>

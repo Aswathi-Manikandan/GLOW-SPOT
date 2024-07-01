@@ -1,0 +1,58 @@
+
+        body {
+            
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+            display: flex; /* Use flexbox for center alignment */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh; /* Full viewport height */
+        }
+
+        .container {
+            
+            padding: 20px;
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Box shadow */
+            max-width: 400px; /* Max width of the form */
+            width: 90%; /* Width of the form */
+            margin-right: 300px;
+        }
+
+        h2 {
+            text-align: center; /* Center the heading */
+            margin-bottom: 30px; /* Margin bottom */
+        }
+
+        form {
+            display: flex; /* Use flexbox for center alignment */
+            flex-direction: column; /* Column layout */
+        }
+
+        label {
+            font-weight: bold; /* Bold font weight */
+            margin-bottom: 10px; /* Margin bottom */
+        }
+
+        input[type="text"] {
+            padding: 10px; /* Padding */
+            border-radius: 5px; /* Rounded corners */
+            border: 1px solid #ccc; /* Border */
+            margin-bottom: 20px; /* Margin bottom */
+            box-sizing: border-box; /* Border box sizing */
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px; /* Padding */
+            border-radius: 5px; /* Rounded corners */
+            background-color: #1e2f42; /* Background color */
+            color: #fff; /* Text color */
+            border: none; /* Remove border */
+            cursor: pointer; /* Cursor style */
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3; /* Hover background color */
+        }
+    

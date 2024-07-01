@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Coupons</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+       
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+            color: #34495e;
+        }
+        .coupons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .coupon {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .coupon:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .coupon h2 {
+            font-size: 1.5em;
+            color:purple;
+            margin-bottom: 10px;
+        }
+        .coupon p {
+            margin: 10px 0;
+            font-size: 1em;
+            color: #34495e;
+        }
+        .coupon button {
+            background-color: purple;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        .coupon button:hover {
+            background-color: purple;
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.9em;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header>
+        <h1>Coupon Page</h1>
+    </header>
+    <div class="container">
+        <h1>Available Coupons</h1>
+        <% if (coupons.length > 0) { %>
+            <div class="coupons">
+                <% coupons.forEach(coupon => { %>
+                    <div class="coupon">
+                        <h2><%= coupon.couponName %></h2>
+                        <p>Code: <strong><%= coupon.couponCode %></strong></p>
+                        <p>Discount: <strong><%= coupon.discountPercent %>%</strong></p>
+                        <p>Minimum Amount: <strong>$<%= coupon.minAmount %></strong></p>
+                        <p>Description: <%= coupon.couponDescription %></p>
+                        <button onclick="applyCoupon('<%= coupon.couponCode %>')">Apply Coupon</button>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <p>No coupons available</p>
+        <% } %>
+    </div>
+   
+    <script>
+        function applyCoupon(couponCode) {
+            fetch('/apply-coupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ couponCode })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Coupon Applied',
+                        text: `Discounted Price: $${data.discountedPrice.toFixed(2)}`,
+                        confirmButtonText: 'Proceed to Checkout'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/checkout';
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error applying coupon:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while applying the coupon. Please try again later.'
+                });
+            });
+        }
+    </script>
+</body>
+</html>

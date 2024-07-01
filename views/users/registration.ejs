@@ -1,0 +1,257 @@
+<style>
+    body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-top: 20px;
+    position: absolute;
+    top: 20px;
+}
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    max-width: 1200px;
+    height: 500px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 8px 32px 0 rgba(201, 202, 218, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    overflow: hidden;
+    margin-top: 150px;
+}
+
+.half {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.half img {
+    max-width: 130%;
+    height: auto;
+    border-radius: 10px;
+    height: 500px;
+}
+
+.registration-form {
+    width: 120%;
+    max-width: 400px;
+    color: black;
+    text-align: center;
+}
+
+.registration-form h1, .registration-form h4, .registration-form h5 {
+    color: white;
+}
+
+.registration-form input[type="text"],
+.registration-form input[type="email"],
+.registration-form input[type="password"],
+.registration-form input[type="submit"] {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    background: white;
+    color: black;
+}
+
+.registration-form input[type="submit"] {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    width: 100px;
+    margin-left: 5px;
+}
+
+.registration-form a {
+    color: white;
+    text-decoration: none;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-top: 20px;
+    position: absolute;
+    top: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.glow-text {
+    font-size: 3rem;
+    color: #fff;
+    text-align: center;
+    animation: fadeIn 3s forwards, slideInFromTop 3s forwards;
+    opacity: 0;
+    margin: 0;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromTop {
+    from {
+        transform: translateY(-50px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="/stylesheet/registration.css">
+</head>
+<body>
+   
+    <div class="content">
+        <h1 class="glow-text">Registration</h1>
+    </div>
+    <div class="center-container">
+        <div class="half">
+            <img src="images/signup.jpg" alt="Registration Image">
+        </div>
+        <div class="half">
+            <div class="registration-form">
+                <h1>Registration Form</h1>
+
+                <!-- Display error message -->
+                <% if (message) { %>
+                    <div class="error-message"><%= message %></div>
+                <% } %>
+
+                <form action="/register" method="post" onsubmit="return validateForm()">
+                    <input type="text" name="name" id="name" placeholder="Enter Name" required><br>
+                    <input type="email" name="email" id="email" placeholder="Enter Email" required><br>
+                    <input type="text" name="mno" id="mno" placeholder="Enter Mobile" required><br>
+                    <input type="password" name="password" id="password" placeholder="Enter Password" required><br>
+                    <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required><br>
+                    
+                    <input type="submit" value="Register"><br>
+                    <a href="/login">Login</a>
+
+                    <!-- Display error messages -->
+                    <div id="errorName" class="error"></div>
+                    <div id="errorEmail" class="error"></div>
+                    <div id="errorMobile" class="error"></div>
+                    <div id="errorPassword" class="error"></div>
+                    <div id="errorConfirmPassword" class="error"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function validateForm() {
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var mobile = document.getElementById("mno").value;
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+
+        var errorName = document.getElementById("errorName");
+        var errorEmail = document.getElementById("errorEmail");
+        var errorMobile = document.getElementById("errorMobile");
+        var errorPassword = document.getElementById("errorPassword");
+        var errorConfirmPassword = document.getElementById("errorConfirmPassword");
+
+        // Reset error messages
+        errorName.innerHTML = "";
+        errorEmail.innerHTML = "";
+        errorMobile.innerHTML = "";
+        errorPassword.innerHTML = "";
+        errorConfirmPassword.innerHTML = "";
+
+        var isValid = true; // Flag to track overall form validity
+
+        // Basic validation for name, email, mobile, password, and confirm password
+        if (name.trim() === "") {
+            errorName.innerHTML = "Name is required";
+            isValid = false;
+        }
+
+        if (email.trim() === "") {
+            errorEmail.innerHTML = "Email is required";
+            isValid = false;
+        } else if (!isValidEmail(email)) {
+            errorEmail.innerHTML = "Enter a valid email address";
+            isValid = false;
+        }
+
+        if (mobile.trim() === "") {
+            errorMobile.innerHTML = "Mobile number is required";
+            isValid = false;
+        } else if (!isValidMobile(mobile)) {
+            errorMobile.innerHTML = "Enter a valid mobile number";
+            isValid = false;
+        }
+
+        if (password.trim() === "") {
+            errorPassword.innerHTML = "Password is required";
+            isValid = false;
+        }
+
+        if (confirmPassword.trim() === "") {
+            errorConfirmPassword.innerHTML = "Please confirm your password";
+            isValid = false;
+        }
+
+        if (password !== confirmPassword) {
+            errorConfirmPassword.innerHTML = "Passwords do not match";
+            isValid = false;
+        }
+
+        return isValid; // Return the flag indicating overall form validity
+    }
+
+    function isValidEmail(email) {
+        // Regular expression for email validation
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function isValidMobile(mobile) {
+        // Basic mobile number validation (10 digits)
+        var mobileRegex = /^\d{10}$/;
+        return mobileRegex.test(mobile);
+    }
+</script>
+
+</body>
+</html>

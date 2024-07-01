@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../layouts/side.ejs') %>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .dashboard-title {
+            margin: 20px 0;
+            padding: 20px;
+            font-size: 2em;
+            color: #004d40;
+            text-align: center;
+        }
+        .filter-container, .chart-container {
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .filter-container {
+            border-top: 5px solid #00796b;
+        }
+        .chart-container {
+            border-top: 5px solid #004d40;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+        }
+        button.btn-primary {
+            background-color: #00796b;
+            border-color: #00796b;
+        }
+        button.btn-primary:hover {
+            background-color: #004d40;
+            border-color: #004d40;
+        }
+        .best-selling-container {
+            display: none;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-top: 5px solid #00796b;
+        }
+        .best-selling h4 {
+            margin-bottom: 20px;
+            color: #004d40;
+        }
+        .list-group-item {
+            background-color: #e9ecef;
+        }
+        .toggle-button {
+            margin-top: 20px;
+        }
+        .card {
+        border: none;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-8px);
+    }
+    .card-icon {
+        color: rgba(255, 255, 255, 0.7);
+    }
+    .card-title {
+        font-size: 1rem;
+        font-weight: 200;
+    }
+    .card-text {
+        font-size: 2rem;
+        font-weight: 200;
+    }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h3 class="dashboard-title">Dashboard</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-white bg-dark mb-3">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <div class="card-icon">
+                            <i class="fas fa-boxes fa-3x mb-3"></i>
+                        </div>
+                        <h5 class="card-title">Total Items Sold</h5>
+                        <p class="card-text display-4"><%= totalSalesCount %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <div class="card-icon">
+                            <i class="fas fa-shopping-cart fa-3x mb-3"></i>
+                        </div>
+                        <h5 class="card-title">Total Orders</h5>
+                        <p class="card-text display-4"><%= totalOrders %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <div class="card-icon">
+                            <i class="fas fa-users fa-3x mb-3"></i>
+                        </div>
+                        <h5 class="card-title">Total Users</h5>
+                        <p class="card-text display-4"><%= totalUsers %></p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 filter-container">
+                <form id="filterForm" action="/admin/home" method="get">
+                    <div class="form-group">
+                        <label for="filter">Filter:</label>
+                        <select id="filter" name="filter" class="form-control">
+                            <option value="yearly" <%= filter === 'yearly' ? 'selected' : '' %>>Yearly</option>
+                            <option value="monthly" <%= filter === 'monthly' ? 'selected' : '' %>>Monthly</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="year">Year:</label>
+                        <input type="number" id="year" name="year" value="<%= year %>" class="form-control">
+                    </div>
+
+                    <div class="form-group" id="monthGroup" style=<%= filter === 'monthly' ? 'display:block;' : 'display:none;' %>">
+                        <label for="month">Month:</label>
+                        <select id="month" name="month" class="form-control">
+                            <% for (let i = 1; i <= 12; i++) { %>
+                                <option value="<%= i %>" <%= i === month ? 'selected' : '' %>><%= i %></option>
+                            <% } %>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                </form>
+            </div>
+
+            <div class="col-md-8 chart-container">
+                <h3 id="chartTitle"><%= filter === 'monthly' ? 'Monthly Order and Sales Statistics' : 'Yearly Order and Sales Statistics' %></h3>
+                <canvas id="ordersChart"></canvas>
+            </div>
+        </div>
+
+        <button id="toggleBestSelling" class="btn btn-primary toggle-button">Show Best Selling Products & Categories</button>
+
+        <div id="bestSellingContainer" class="best-selling-container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="best-selling">
+                        <h4>Best Selling Products</h4>
+                        <ul class="list-group">
+                            <% bestSellingProducts.forEach(product => { %>
+                                <li class="list-group-item">
+                                    <strong><%= product.productDetails.name %></strong> - <%= product.totalQuantity %> sold
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="best-selling">
+                        <h4>Best Selling Categories</h4>
+                        <ul class="list-group">
+                            <% bestSellingCategories.forEach(category => { %>
+                                <li class="list-group-item">
+                                    <strong><%= category.categoryDetails.name %></strong> - <%= category.totalQuantity %> sold
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('filter').addEventListener('change', function() {
+            const filter = this.value;
+            const monthGroup = document.getElementById('monthGroup');
+
+            if (filter === 'monthly') {
+                monthGroup.style.display = 'block';
+            } else {
+                monthGroup.style.display = 'none';
+            }
+        });
+
+        document.getElementById('toggleBestSelling').addEventListener('click', function() {
+            const bestSellingContainer = document.getElementById('bestSellingContainer');
+            const isVisible = bestSellingContainer.style.display === 'block';
+            bestSellingContainer.style.display = isVisible ? 'none' : 'block';
+            this.textContent = isVisible ? 'Show Best Selling Products & Categories' : 'Hide Best Selling Products & Categories';
+        });
+
+        const ctxOrders = document.getElementById('ordersChart').getContext('2d');
+        const ordersChart = new Chart(ctxOrders, {
+            type: 'bar',
+            data: {
+                labels: '<%= JSON.stringify(orders.map(order => order._id)) %>',
+                datasets: [{
+                    label: 'Orders',
+                    data: '<%= JSON.stringify(orders.map(order => order.totalOrders)) %>',
+                    backgroundColor: 'rgba(0, 150, 136, 0.2)',
+                    borderColor: 'rgba(0, 150, 136, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Sales',
+                    data: '<%= JSON.stringify(orders.map(order => order.totalSales)) %>',
+                    backgroundColor: 'rgba(38, 166, 154, 0.2)',
+                    borderColor: 'rgba(38, 166, 154, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Category Sales',
+                    data: '<%= JSON.stringify(categorySales.map(sale => sale.totalSales)) %>',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

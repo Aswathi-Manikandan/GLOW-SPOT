@@ -1,0 +1,79 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile Dashboard</title>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Font Awesome CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<style>
+    body {
+        font-family: 'Times New Roman', Times, serif;
+        background-color: white;
+    }
+    .sidebar {
+        position: fixed;
+        top: 100px;
+        left: 0;
+        width: 250px;
+        height: 100%;
+        background-color: #fff; /* White sidebar background color */
+        color: #000; /* Black text color */
+        padding-top: 20px;
+        display: flex; /* Use flexbox */
+        flex-direction: column; /* Arrange items vertically */
+        align-items: center; /* Center items horizontally */
+    }
+    .sidebar ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    .sidebar ul li {
+        padding: 10px;
+        border-bottom: none; /* Remove the border */
+    }
+    .sidebar ul li a {
+        color: #000; /* Black link text color */
+        text-decoration: none;
+    }
+    .sidebar ul li a:hover {
+        color: #555; /* Dark gray link hover color */
+    }
+    .content {
+        margin-left: 250px;
+        padding: 20px;
+    }
+    .content h2 {
+        margin-top: 200px;
+    }
+    .sidebar ul li a i {
+font-size: 20px; /* Adjust the size as needed */
+margin-right: 10px; /* Add some spacing between the icon and text */
+}
+
+.sidebar ul li a {
+color: #000; /* Black link text color */
+text-decoration: none;
+font-size: 16px; /* Adjust the size as needed */
+}
+
+.sidebar ul li a:hover {
+color: #555; /* Dark gray link hover color */
+}
+
+   
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+<div style="margin-top: 50px; font-size: 24px;">My Account</div>
+<ul>
+    <li><a href="/userProfile"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+    <li><a href="/order"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+    <li><a href="/address"><i class="fas fa-map-marker-alt"></i> Address</a></li>
+    <li><a href="/wallet"><i class="fas fa-wallet"></i> Wallet</a></li>
+    <!-- <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sign out</a></li> -->
+</ul>
+</div>
+

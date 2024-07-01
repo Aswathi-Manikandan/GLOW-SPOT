@@ -1,0 +1,226 @@
+<%- include('../layouts/side.ejs') %>
+    <title>Add Product</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheet/product.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Add Product</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="/admin/products/addpost" method="POST" enctype="multipart/form-data"
+                            onsubmit="return validate()">
+                            <div class="form-group">
+                                <label for="p-name">Product Name</label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Enter Product Name" required>
+                                <div id="nameError" class="text-danger"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="productCategory">Category</label>
+                                <select class="form-control" id="productCategory" name="category" required>
+                                    <% categories.forEach(category => { %>
+                                    <option value="<%= category._id %>"><%= category.name %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="productPrice">Price</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">₹</span>
+                                        </div>
+                                        <input type="number" name="price" id="productPrice" class="form-control" placeholder="Enter Price" required>
+                                    </div>
+                                    <div id="priceError" class="text-danger"></div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="productQuantity">Quantity</label>
+                                    <input type="number" name="quantity" id="productQuantity" class="form-control" placeholder="Enter Quantity" required>
+                                    <div id="quantityError" class="text-danger"></div>
+                                </div>
+                                
+                                <script>
+                                    document.getElementById('productQuantity').addEventListener('input', function() {
+                                        var quantityInput = this.value;
+                                        var errorDiv = document.getElementById('quantityError');
+                                        
+                                        if (quantityInput < 0) {
+                                            errorDiv.textContent = 'Quantity cannot be negative.';
+                                        } else {
+                                            errorDiv.textContent = '';
+                                        }
+                                    });
+                                
+                                    document.getElementById('productQuantity').addEventListener('change', function() {
+                                        var quantityInput = this.value;
+                                        var errorDiv = document.getElementById('quantityError');
+                                        
+                                        if (quantityInput === '0') {
+                                            errorDiv.textContent = ''; // Clear error message for quantity of 0
+                                        }
+                                    });
+                                </script>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="description">Product Description</label>
+                                <textarea name="description" id="description" class="form-control" rows="5" placeholder="Enter Product Description" required></textarea>
+                                <div id="descriptionError" class="text-danger"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Image 1 *</label>
+                                <input type="file" id="productImages1" name="images" class="form-control" required>
+                                <div class="image-preview" id="image-preview1"></div>
+                                <div id="imagesError1" class="text-danger"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Image 2 *</label>
+                                <input type="file" id="productImages2" name="images" class="form-control" required>
+                                <div class="image-preview" id="image-preview2"></div>
+                                <div id="imagesError2" class="text-danger"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Image 3 *</label>
+                                <input type="file" id="productImages3" name="images" class="form-control" required>
+                                <div class="image-preview" id="image-preview3"></div>
+                                <div id="imagesError3" class="text-danger"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Image 4 *</label>
+                                <input type="file" id="productImages4" name="images" class="form-control" required>
+                                <div class="image-preview" id="image-preview4"></div>
+                                <div id="imagesError4" class="text-danger"></div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" name="submit" class="btn btn-primary">Add Product</button>
+                                <a href="/admin/products" class="btn btn-primary ml-2">Back</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validate() {
+            var name = document.getElementById("name").value.trim();
+            var description = document.getElementById("description").value.trim();
+            var price = document.getElementById("productPrice").value.trim();
+            var quantity = document.getElementById("productQuantity").value.trim();
+            var discount = document.getElementById("discountPrice").value.trim();
+            var images1 = document.getElementById("productImages1").value.trim();
+            var images2 = document.getElementById("productImages2").value.trim();
+            var images3 = document.getElementById("productImages3").value.trim();
+            var images4 = document.getElementById("productImages4").value.trim();
+
+            var nameError = document.getElementById("nameError");
+            var descriptionError = document.getElementById("descriptionError");
+            var priceError = document.getElementById("priceError");
+            var quantityError = document.getElementById("quantityError");
+            var discountError = document.getElementById("discountError");
+            var imagesError1 = document.getElementById("imagesError1");
+            var imagesError2 = document.getElementById("imagesError2");
+            var imagesError3 = document.getElementById("imagesError3");
+            var imagesError4 = document.getElementById("imagesError4");
+
+            // Reset errors
+            nameError.textContent = "";
+            descriptionError.textContent = "";
+            priceError.textContent = "";
+            quantityError.textContent = "";
+            discountError.textContent = "";
+            imagesError1.textContent = "";
+            imagesError2.textContent = "";
+            imagesError3.textContent = "";
+            imagesError4.textContent = "";
+
+            var isValid = true;
+
+            if (name === "") {
+                nameError.textContent = "Please enter a product name.";
+                isValid = false;
+            }
+
+            if (description === "") {
+                descriptionError.textContent = "Please enter a product description.";
+                isValid = false;
+            }
+
+            if (isNaN(parseFloat(price)) || price <= 0) {
+                priceError.textContent = "Please enter a valid price.";
+                isValid = false;
+            }
+
+            if (isNaN(parseInt(quantity)) || quantity <= 0) {
+                quantityError.textContent = "Please enter a valid quantity.";
+                isValid = false;
+            }
+
+            if (isNaN(parseFloat(discount)) || discount <= 0 || discount >= 100) {
+                discountError.textContent = "Check Discount Percentage"
+                isValid = false;
+            }
+
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.webp)$/i;
+
+            if (!allowedExtensions.test(images1)) {
+                imagesError1.textContent = "Please upload image"
+                isValid = false;
+            }
+
+            if (!allowedExtensions.test(images2)) {
+                imagesError2.textContent = "Please upload image"
+                isValid = false;
+            }
+
+            if (!allowedExtensions.test(images3)) {
+                imagesError3.textContent = "Please upload image"
+                isValid = false;
+            }
+
+            if (!allowedExtensions.test(images4)) {
+                imagesError4.textContent = "Please upload image"
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Image Preview" style="max-width: 100%; max-height: 200px;">`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.innerHTML = '';
+            }
+        }
+
+        document.getElementById('productImages1').addEventListener('change', function () {
+            previewImage(this, 'image-preview1');
+        });
+        document.getElementById('productImages2').addEventListener('change', function () {
+            previewImage(this, 'image-preview2');
+        });
+        document.getElementById('productImages3').addEventListener('change', function () {
+            previewImage(this, 'image-preview3');
+        });
+        document.getElementById('productImages4').addEventListener('change', function () {
+            previewImage(this, 'image-preview4');
+        });
+    </script>
+</body>
+
+</html>

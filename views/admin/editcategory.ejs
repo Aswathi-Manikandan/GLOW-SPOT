@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../layouts/side.ejs')  %>
+    <title>Edit Category</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xxxxxx" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/stylesheet/categoryedit.css">
+    <style>
+        .error-message {
+            color: red;
+            font-size: 14px; /* Reduce font size */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Edit Category</h2>
+        <form action="/admin/category/edit/<%= category._id %>" method="POST">
+            <div>
+                <label for="categoryName">Category Name:</label>
+                <input type="text" id="categoryName" name="name" value="<%= category.name %>" required>
+            </div>
+            <button type="submit">Update Category</button>
+        </form>
+        <% if (message) { %>
+            <p class="error-message"><%= message %></p>
+        <% } %>
+    </div>
+</body>
+
+</html>

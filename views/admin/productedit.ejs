@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../layouts/side.ejs') %>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .change-image-btn {
+            font-size: 0.75rem; /* Adjust font size */
+            padding: 0.25rem 0.5rem; /* Adjust padding */
+        }
+        /* Custom CSS */
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .image-item {
+            position: relative;
+            flex: 0 0 calc(25% - 20px);
+        }
+
+        .image-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header bg-dark text-white">
+                            <h2 class="text-center mb-0">Edit Product</h2>
+                        </div>
+                        <div class="card-body">
+                            <form action="/admin/products/edit/<%= product._id %>" method="POST" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label>Product Name</label>
+                                    <input type="text" name="name" id="name" class="form-control" value="<%= product.name %>">
+                                    <div id="nameError" class="text-danger"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Category</label>
+                                    <select class="form-control" id="category" name="category">
+                                        <% categories.forEach(category => { %>
+                                            <option value="<%= category._id %>" <%= category._id.toString() === product.category.toString() ? 'selected' : '' %>><%= category.name %></option>
+                                        <% }); %>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="price">Price</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">₹</span>
+                                            </div>
+                                            <input type="number" name="price" id="price" class="form-control" value="<%= product.price %>">
+                                        </div>
+                                        <div id="priceError" class="text-danger"></div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="quantity">Quantity</label>
+                                        <input type="number" name="quantity" id="quantity" class="form-control" value="<%= product.quantity %>">
+                                        <div id="quantityError" class="text-danger"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Product Description</label>
+                                    <textarea name="description" id="description" class="form-control" rows="5"><%= product.description %></textarea>
+                                    <div id="descriptionError" class="text-danger"></div>
+                                </div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="image-container">
+                                                <!-- HTML code -->
+                                                <!-- Add delete buttons for existing images -->
+                                                <% if(product.pictures && product.pictures.length > 0) { %>
+                                                    <% product.pictures.forEach((image, index) => { %>
+                                                        <div class="image-item">
+                                                            <label>Existing Image <%= index + 1 %> </label>
+                                                            <img src="<%= image %>" alt="Product Image <%= index + 1 %>" class="preview-image" />
+                                                            <button class="btn btn-danger delete-image-btn" data-image-index="<%= index %>">Delete</button>
+                                                        </div>
+                                                    <% }) %>
+                                                <% } else { %>
+                                                    <h4>No images available to edit.</h4>
+                                                <% } %>
+                                            </div>
+                                            <!-- Container for new image inputs -->
+                                            <div id="newImageInputs">
+                                                <% for(let i = product.pictures.length; i < 4; i++) { %>
+                                                    <div class="form-group new-image-input">
+                                                        <label>New Image <%= i + 1 %></label>
+                                                        <input type="file" name="images" class="form-control">
+                                                    </div>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button type="submit" name="submit" class="btn btn-primary">Edit Product</button>
+                                    <a href="/admin/products" class="btn btn-primary ml-2">Back</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End row -->
+        </div><!-- End container -->
+    </div><!-- End container-fluid page-body-wrapper -->
+</div><!-- End container-scroller -->
+
+<!-- External scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Preview New Images Script -->
+<script>
+    // Handle delete image button click
+    document.querySelectorAll('.delete-image-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const imageIndex = btn.dataset.imageIndex;
+            const confirmation = confirm('Are you sure you want to delete this image?');
+            if (confirmation) {
+                // Append the index of the image to be deleted to a hidden input field
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'deletedImages';
+                input.value = imageIndex;
+                document.querySelector('form').appendChild(input);
+                // Remove the image preview
+                btn.parentElement.remove();
+                // Add new image input field if there are less than 4 images
+                const newImageInputs = document.getElementById('newImageInputs');
+                const currentImageCount = document.querySelectorAll('.image-item').length;
+                if (currentImageCount < 4) {
+                    const newImageInput = document.createElement('div');
+                    newImageInput.classList.add('form-group', 'new-image-input');
+                    newImageInput.innerHTML = `<label>New Image ${currentImageCount + 1}</label><input type="file" name="images" class="form-control">`;
+                    newImageInputs.appendChild(newImageInput);
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

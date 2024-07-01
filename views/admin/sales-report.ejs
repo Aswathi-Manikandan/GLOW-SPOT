@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sales Report</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<%- include('../layouts/side.ejs') %>
+
+<style>
+    /* Add your styles here */
+    body {
+        font-family: 'Times New Roman', Times, serif;
+        background-color: #f0f0f5;
+        margin: 0;
+        padding: 20px;
+        font-size: small;
+    }
+
+   
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #1e2e3f;
+    }
+    .sales-report-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        margin-right: 300px;
+    }
+
+    .sales-report-table th, .sales-report-table td {
+        padding: 15px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .sales-report-table th {
+        background-color: #1c2236;
+        color: white;
+    }
+
+    .sales-report-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .sales-report-table ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sales-report-table ul li {
+        margin: 5px 0;
+    }
+
+    .date-filter {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .date-filter input, .date-filter select, .date-filter button {
+        padding: 10px;
+        margin: 0 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .date-filter button {
+        background-color: #1b223a;
+        color: white;
+        border: none;
+    }
+
+    .date-filter button:hover {
+        background-color: #20273d;
+    }
+
+    .sales-count, .total-amount, .total-discount, .coupon-count {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 1.2em;
+        color: #333;
+    }
+
+    .download-buttons {
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .download-buttons button {
+        padding: 10px 20px;
+        margin: 0 10px;
+        font-size: 1em;
+        border: none;
+        border-radius: 5px;
+        background-color: #272e47;
+        color: white;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .download-buttons button:hover {
+        background-color: #1f273f;
+    }
+    .pagination {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .pagination a {
+        margin: 0 5px;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: #1c2236;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f0f0f5;
+    }
+
+    .pagination a.active {
+        background-color: #1c2236;
+        color: white;
+        border: 1px solid #1c2236;
+    }
+
+    .pagination a:hover:not(.active) {
+        background-color: #ddd;
+    }
+</style>
+<body>
+    <div class="container">
+        <h1>Sales Report</h1>
+        <div class="date-filter">
+            <form method="get" action="/admin/sales">
+                <label for="filterType">Filter By:</label>
+                <select id="filterType" name="filterType" onchange="toggleDateInputs()">
+                    <option value="">Custom</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                </select>
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate" name="startDate" value="<%= startDate %>" disabled>
+                <label for="endDate">End Date:</label>
+                <input type="date" id="endDate" name="endDate" value="<%= endDate %>" disabled>
+                <button type="submit">Filter</button>
+            </form>
+        </div>
+        <div class="sales-count">
+            Total Sales: <%= salesCount %>
+        </div>
+        <div class="total-amount">
+            Total Amount: $<%= totalSalesAmount.toFixed(2) %>
+        </div>
+        <div class="total-discount">
+            Total Discount: $<%= totalDiscountAmount.toFixed(2) %>
+        </div>
+        <div class="coupon-count">
+            Coupons Used: <%= couponCount %>
+        </div>
+        
+        <div class="download-buttons">
+            <form method="get" action="/admin/sales/pdf" style="display:inline;">
+                <input type="hidden" name="filterType" value="<%= filterType %>">
+                <input type="hidden" name="startDate" value="<%= startDate %>">
+                <input type="hidden" name="endDate" value="<%= endDate %>">
+                <button type="submit">Download PDF</button>
+            </form>
+            <form method="get" action="/admin/sales/excel" style="display:inline;">
+                <input type="hidden" name="filterType" value="<%= filterType %>">
+                <input type="hidden" name="startDate" value="<%= startDate %>">
+                <input type="hidden" name="endDate" value="<%= endDate %>">
+                <button type="submit">Download Excel</button>
+            </form>
+        </div>
+
+        <table class="sales-report-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Payment Method</th>
+                    <th>Status</th>
+                    <th>Products</th>
+                    <th>Address</th>
+                    <th>Created At</th>
+                    <th>Coupon</th>
+                    <th>Discount Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% salesReport.forEach(report => { %>
+                    <tr>
+                        <td><%= report.user %></td>
+                        <td><%= report.paymentMethod %></td>
+                        <td><%= report.status %></td>
+                        <td>
+                            <ul>
+                                <% report.products.forEach(product => { %>
+                                    <li><img src="<%= product.pictures[0] %>" alt="<%= product.name %>" style="width: 50px; height: 50px;"> <%= product.name %> (Qty: <%= product.quantity %>) - $<%= product.price %></li>
+                                <% }); %>
+                            </ul>
+                        </td>
+                        <td><%= report.address %></td>
+                        <td><%= report.createdAt %></td>
+                        <td><%= report.coupon %></td>
+                        <td>$<%= report.discountAmount ? report.discountAmount.toFixed(2) : '0.00' %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        
+        <div class="pagination">
+            <% if (currentPage > 1) { %>
+                <a href="?page=<%= currentPage - 1 %>&filterType=<%= filterType %>&startDate=<%= startDate %>&endDate=<%= endDate %>">Previous</a>
+            <% } %>
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <a href="?page=<%= i %>&filterType=<%= filterType %>&startDate=<%= startDate %>&endDate=<%= endDate %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+            <% } %>
+            <% if (currentPage < totalPages) { %>
+                <a href="?page=<%= currentPage + 1 %>&filterType=<%= filterType %>&startDate=<%= startDate %>&endDate=<%= endDate %>">Next</a>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        function toggleDateInputs() {
+            const filterType = document.getElementById('filterType').value;
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+
+            if (filterType === '') {
+                startDateInput.disabled = false;
+                endDateInput.disabled = false;
+            } else {
+                startDateInput.disabled = true;
+                endDateInput.disabled = true;
+            }
+        }
+
+        // Initialize the form based on filter type
+        window.onload = function() {
+            toggleDateInputs();
+        };
+    </script>
+    
+</body>
+
+</html>

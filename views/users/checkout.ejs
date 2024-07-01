@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-header {
+            background: url('product_images/allbg.jpg') center center/cover no-repeat;
+            text-align: center;
+            padding: 100px 0;
+            color: white;
+            height: 450px;
+        }
+
+        .page-header h1 {
+            font-size: 3em;
+            margin: 0;
+            margin-top: 70px;
+        }
+
+        .breadcrumb-nav {
+            background-color: #fff;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .breadcrumb {
+            margin-bottom: 0;
+            background-color: transparent;
+        }
+
+        .breadcrumb-item a {
+            color: #007bff;
+        }
+
+        .checkout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .main-content {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .summary {
+            width: 350px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .address-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .address-item {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .address-label {
+            display: block;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .address-label input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            border: 2px solid purple;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            vertical-align: middle;
+            position: relative;
+            top: 2px;
+        }
+
+        .address-label input[type="checkbox"]:checked {
+            background-color: purple;
+        }
+
+        .add-address-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .add-address-link {
+            display: inline-block;
+            background-color: purple;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .summary-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .table-summary {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .table-summary th, .table-summary td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .summary-subtotal, .summary-total, .summary-discount {
+            font-weight: bold;
+        }
+
+        .payment-option {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .payment-option.selected {
+            background-color: lightblue;
+            border-color: blue;
+        }
+
+        .btn-order {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-order:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-outline-primary-2 {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-outline-primary-2:hover {
+            background-color: #0056b3;
+        }
+        .payment-option {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .payment-option.selected {
+            background-color: lightblue;
+            border-color: blue;
+        }
+        .btn-apply-coupon {
+        background-color:purple; /* Orange background */
+        color: white; /* White text */
+        padding: 12px 25px; /* Padding */
+        font-size: 16px; /* Font size */
+        font-weight: bold; /* Bold text */
+        border: black; /* Border with the same color as the background */
+        border-radius: 20px; /* More rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Smooth transition */
+    }
+
+    .btn-apply-coupon:hover {
+        background-color: white; /* White background on hover */
+        color: purple;/* Orange text on hover */
+        border-color: black; /* Keep the border color same */
+        transform: translateY(-3px); /* Slightly lift the button */
+    }
+
+    .btn-apply-coupon:active {
+        transform: translateY(1px); /* Slightly push down the button when clicked */
+    }
+
+    .btn-apply-coupon:focus {
+        outline: none; /* Remove default focus outline */
+        box-shadow: 0 0 0 3px rgba(255, 87, 51, 0.5); /* Custom focus outline */
+    }
+    </style>
+</head>
+<body>
+<% var loggedin = true; %> <!-- You can set it to true or false based on your logic -->
+<%- include('../layouts/user-header.ejs', { loggedin: loggedin, user: user }) %>
+
+<main class="main">
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title" style="font-family: 'Times New Roman', Times, serif;">Checkout<span></span></h1>
+        </div>
+    </div>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+            </ol>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="checkout">
+            <div class="main-content">
+                <h2 style="text-align: center; font-family: 'Times New Roman', Times, serif;">Checkout</h2>
+                <form id="checkout-form" action="/checkout" method="POST" onsubmit="return validateCheckout()">
+                    <div class="container-narrow">
+                        <h4 style="font-family: 'Times New Roman', Times, serif;">Select Addresses</h4>
+                        <form id="addressForm">
+                            <% if (addresses.length > 0) { %>
+                                <div class="address-list">
+                                    <% addresses.forEach(address => { %>
+                                        <div class="address-item">
+                                            <label class="address-label">
+                                                <input type="checkbox" name="selectedAddresses" value="<%= address._id %>">
+                                                <span><%= address.street %></span>, <br>
+                                                <span><%= address.city %></span>, <br>
+                                                <span><%= address.state %></span>,<br>
+                                                <span><%= address.postalCode %></span>, <br>
+                                                <span><%= address.country %></span>
+                                            </label>
+                                        </div>
+                                    <% }); %>
+                                </div>
+                            <% } else { %>
+                                <p style="font-family: 'Times New Roman', Times, serif;">No addresses found.</p>
+                            <% } %>
+                            <div class="add-address-button">
+                                <a href="/address/add" class="add-address-link" style="font-family: 'Times New Roman', Times, serif;">+Add New Address</a>
+                            </div>
+                        </form>
+                    </div>
+                </form>
+            </div>
+            <aside class="summary">
+                <h3 class="summary-title"  style="font-family: 'Times New Roman', Times, serif;">Your Order</h3>
+                <table class="table table-summary">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Image</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (cart && cart.products.length > 0) { %>
+                            <% cart.products.forEach(item => { %>
+                                <tr>
+                                    <td><a href="#"><%= item.product.name %></a></td>
+                                    <td>
+                                        <% if (item.product.pictures && item.product.pictures.length > 0) { %>
+                                            <img src="<%= item.product.pictures[0] %>" alt="<%= item.product.name %>" style="max-width: 50px;">
+                                        <% } else { %>
+                                            <img src="/placeholder.jpg" alt="Placeholder" style="max-width: 50px;">
+                                        <% } %>
+                                    </td>
+                                    <td>$<%= (item.price * item.quantity).toFixed(2) %></td>
+                                </tr>
+                            <% }); %>
+                            <tr class="summary-subtotal">
+                                <td>Subtotal:</td>
+                                <td></td>
+                                <td>$<span id="subtotal"><%= cart.grandTotal.toFixed(2) %></span></td>
+                            </tr>
+                            <% if (discountedPrice) { %>
+                                <tr class="summary-discount">
+                                    <td>Discount:</td>
+                                    <td></td>
+                                    <td>-$<span id="discount"><%= (cart.grandTotal - discountedPrice).toFixed(2) %></span></td>
+                                </tr>
+                                <tr class="summary-total">
+                                    <td>Total:</td>
+                                    <td></td>
+                                    <td>$<span id="total"><%= discountedPrice.toFixed(2) %></span></td>
+                                </tr>
+                            <% } else { %>
+                                <tr class="summary-total">
+                                    <td>Total:</td>
+                                    <td></td>
+                                    <td>$<%= cart.grandTotal.toFixed(2) %></td>
+                                </tr>
+                            <% } %>
+                            <tr>
+                                <td>Shipping:</td>
+                                <td></td>
+                                <td>Free shipping</td>
+                            </tr>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="3"  style="font-family: 'Times New Roman', Times, serif;" >No items in cart</td>
+                            </tr>
+                            <tr class="summary-subtotal">
+                                <td>Subtotal:</td>
+                                <td></td>
+                                <td>$0.00</td>
+                            </tr>
+                            <tr class="summary-total">
+                                <td>Total:</td>
+                                <td></td>
+                                <td>$0.00</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <h4 id="selectPaymentBtn" style="cursor: pointer; text-align: center;">Select Payment</h4>
+                <div id="paymentOptions"></div>
+                <script>
+                    const selectPaymentBtn = document.getElementById('selectPaymentBtn');
+                    const paymentOptionsContainer = document.getElementById('paymentOptions');
+                    let selectedMethod = null;
+                    selectPaymentBtn.addEventListener('click', function() {
+                        paymentOptionsContainer.innerHTML = '';
+                        const paymentOptions = ['Cash on Delivery','Online payment', 'Wallet'];
+                        const totalElement = document.getElementById('total');
+                        const totalAmount = parseFloat(totalElement ? totalElement.textContent : document.getElementById('subtotal').textContent);
+
+                        paymentOptions.forEach(option => {
+                            const optionElement = document.createElement('div');
+                            optionElement.textContent = option;
+                            optionElement.classList.add('payment-option');
+                            
+                            if (option === 'Cash on Delivery' && totalAmount > 2000) {
+                                optionElement.style.display = 'none'; // Hide COD option if total > 2000
+                            } else {
+                                optionElement.addEventListener('click', function() {
+                                    if (selectedMethod === option) {
+                                        selectedMethod = null;
+                                        optionElement.classList.remove('selected');
+                                    } else {
+                                        selectedMethod = option;
+                                        document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'));
+                                        optionElement.classList.add('selected');
+                                    }
+                                    console.log(selectedMethod);
+                                });
+                            }
+                            paymentOptionsContainer.appendChild(optionElement);
+                        });
+                    });
+                </script>
+                <button type="submit" class="btn btn-outline-primary-2 btn-order" form="checkout-form">
+                    <span class="btn-text">Place Order</span>
+                    <span class="btn-hover-text">Proceed to Payment</span>
+                </button>
+                <br><br>
+                <button class="btn-apply-coupon" onclick="applyCoupon()">Apply Coupon</button>
+            </aside>
+        </div>
+        <script>
+            // JavaScript function to redirect user to coupon page
+            function applyCoupon() {
+                // Redirect to the coupon page
+                window.location.href = "/coupons";
+            }
+        </script>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+        async function handleRazorpayPayment(totalAmount) {
+    try {
+        const response = await fetch('/create-razorpay-order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ amount: totalAmount })
+        });
+        const order = await response.json();
+
+        const options = {
+            key: 'rzp_test_5iUXSbExDFrELM',
+            amount: order.amount,
+            currency: order.currency,
+            name: 'Glow Spot',
+            description: 'Order Payment',
+            order_id: order.id,
+            handler: async function (response) {
+                try {
+                    const requestBody = {
+                        userId: '<%= user._id %>',
+                        selectedAddresses: Array.from(document.querySelectorAll('input[name="selectedAddresses"]:checked')).map(address => address.value),
+                        paymentMethod: 'Razorpay',
+                        razorpayPaymentId: response.razorpay_payment_id,
+                        razorpayOrderId: response.razorpay_order_id,
+                        razorpaySignature: response.razorpay_signature,
+                        amount: totalAmount
+                    };
+                    const checkoutResponse = await fetch('/checkout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
+                    if (checkoutResponse.ok) {
+                        window.location.href = '/thankyou';
+                    } else {
+                        const error = await checkoutResponse.json();
+                        alert(error.error || 'Something went wrong');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Something went wrong');
+                }
+            },
+            modal: {
+                ondismiss: async function () {
+                    try {
+                        const requestBody = {
+                            userId: '<%= user._id %>',
+                            selectedAddresses: Array.from(document.querySelectorAll('input[name="selectedAddresses"]:checked')).map(address => address.value),
+                            paymentMethod: 'Razorpay',
+                            paymentStatus: 'Failed',
+                            amount: totalAmount
+                        };
+                        const response = await fetch('/checkout', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(requestBody)
+                        });
+
+                        if (response.ok) {
+                            window.location.href = '/order';
+                        } else {
+                            const error = await response.json();
+                            alert(error.error || 'Something went wrong');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Something went wrong');
+                    }
+                }
+            },
+            prefill: {
+                name: '<%= user.name %>',
+                email: '<%= user.email %>',
+                contact: '<%= user.phone %>'
+            },
+            theme: {
+                color: '#007bff'
+            }
+        };
+        const rzp = new Razorpay(options);
+        rzp.open();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong');
+    }
+}
+
+
+async function handleWalletPayment(totalAmount) {
+    try {
+        const requestBody = {
+            userId: '<%= user._id %>',
+            selectedAddresses: Array.from(document.querySelectorAll('input[name="selectedAddresses"]:checked')).map(address => address.value),
+            paymentMethod: 'Wallet',
+            amount: totalAmount
+        };
+        const checkoutResponse = await fetch('/checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        });
+        if (checkoutResponse.ok) {
+            window.location.href = '/thankyou';
+        } else {
+            const error = await checkoutResponse.json();
+            alert(error.error || 'Something went wrong');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong');
+    }
+}
+        async function handleCashOnDelivery(totalAmount) {
+            try {
+                const requestBody = {
+                    userId: '<%= user._id %>',
+                    selectedAddresses: Array.from(document.querySelectorAll('input[name="selectedAddresses"]:checked')).map(address => address.value),
+                    paymentMethod: 'Cash on Delivery',
+                    amount: totalAmount
+                };
+                const checkoutResponse = await fetch('/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+                if (checkoutResponse.ok) {
+                    window.location.href = '/thankyou';
+                } else {
+                    const error = await checkoutResponse.json();
+                    alert(error.error || 'Something went wrong');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Something went wrong');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('checkout-form').addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent default form submission
+
+                const selectedPaymentMethod = document.querySelector('.payment-option.selected');
+                if (!selectedPaymentMethod) {
+                    alert('Please select a payment method');
+                    return;
+                }
+
+                const totalElement = document.getElementById('total');
+                const totalAmount = parseFloat(totalElement ? totalElement.textContent : document.getElementById('subtotal').textContent);
+                const paymentMethod = selectedPaymentMethod.textContent.trim();
+
+                if (paymentMethod === 'Online payment') {
+                    handleRazorpayPayment(totalAmount);
+                } else if (paymentMethod === 'Wallet') {
+                    handleWalletPayment(totalAmount);
+                } else if (paymentMethod === 'Cash on Delivery') {
+                    handleCashOnDelivery(totalAmount);
+                } else {
+                    // Handle other payment methods
+                    // ...
+                }
+            });
+        });
+    </script>
+</div>
+</main>
+
+<%- include('../layouts/footer.ejs') %>
+</body>
+</html>

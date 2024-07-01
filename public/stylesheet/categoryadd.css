@@ -1,0 +1,56 @@
+
+    .card {
+        margin-top: 27%; /* Adjust the margin-top */
+        max-width: 400px; /* Adjust the maximum width of the card */
+       
+        background-color: rgba(255, 255, 255, 0.5); 
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Add box shadow */
+        backdrop-filter: blur(10px); /* Add blur effect */
+        -webkit-backdrop-filter: blur(10px); /* Add blur effect for older browsers */
+        border-radius: 10px; /* Add border radius */
+        margin-right: 400px;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        margin-top: 50px; /* Add margin from the top */
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .card-body {
+        padding: 30px;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    
+    .btn-primary {
+        width: 50%;
+        padding: 10px 20px; /* Adjust padding */
+        font-size: 14px; /* Adjust font size */
+        background-color: rgb(27, 144, 221);
+        color: #fff; /* Add text color */
+        border: none; /* Remove border */
+        border-radius: 30px; /* Add border radius for rounded corners */
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+
+
+    .btn-primary:hover {
+        background-color: #3d4146; /* Change color on hover */
+    }
+
+    /* Center the button */
+    .text-center {
+        text-align: center;
+    }
+

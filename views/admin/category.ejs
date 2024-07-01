@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Category Management</title>
+    <link rel="stylesheet" href="/stylesheet/category.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xxxxxx" crossorigin="anonymous" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <%- include('../layouts/side.ejs') %>
+</head>
+<body>
+    <div class="container">
+        <h2>Category Management</h2>
+
+        <!-- Search Form -->
+        <form action="/admin/category/search" method="GET" class="search-container">
+            <input type="text" name="query" placeholder="Search...">
+            <button type="submit">Search</button>
+        </form>
+
+        <!-- Table Container -->
+        <div class="table-container">
+            <!-- Table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Category Name</th>
+                       
+                        <th>Offer</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% categories.forEach((category, index) => { %>
+                        <tr id="category-<%= category.id %>">
+                            <td><%= index + 1 %></td>
+                            <td><%= category.name %></td>
+                           
+                            <td>
+                                <form action="/admin/category/update-offer/<%= category.id %>" method="POST">
+                                    <select name="offerId" onchange="this.form.submit()">
+                                        <option value="">Select an Offer</option>
+                                        <% offers.forEach(offer => { %>
+                                            <option value="<%= offer._id %>" <%= category.offer && category.offer.equals(offer._id) ? 'selected' : '' %>><%= offer.name %></option>
+                                        <% }); %>
+                                    </select>
+                                </form>
+                            </td>
+                            <td>
+                                <div class="button-container">
+                                    <a href="/admin/category/edit/<%= category.id %>"><button class="edit-button">Edit</button></a>
+                                    
+                                    <!-- Block/Unblock form -->
+                                    <% if (category.deleted) { %>
+                                        <form id="unblockForm<%= category.id %>" action="/admin/category/unblock/<%= category.id %>" method="POST">
+                                            <button type="button" class="unblock-button" onclick="confirmUnblock('<%= category.id %>')">Unblock</button>
+                                        </form>
+                                    <% } else { %>
+                                        <form id="blockForm<%= category.id %>" action="/admin/category/block/<%= category.id %>" method="POST">
+                                            <button type="button" class="block-button" onclick="confirmBlock('<%= category.id %>')">Block</button>
+                                        </form>
+                                    <% } %>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="add-button-container">
+            <a href="/admin/category/add" class="add-button">Add Category</a>
+        </div>
+        
+        <div class="pagination-container">
+            <ul class="pagination">
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                        <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function confirmBlock(categoryId) {
+            swal({
+                title: "Are you sure?",
+                text: "Once blocked, you will not be able to access this category!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willBlock) => {
+                if (willBlock) {
+                    document.getElementById('blockForm' + categoryId).submit();
+                }
+            });
+        }
+
+        function confirmUnblock(categoryId) {
+            swal({
+                title: "Are you sure?",
+                text: "Once unblocked, you will be able to access this category!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willUnblock) => {
+                if (willUnblock) {
+                    document.getElementById('unblockForm' + categoryId).submit();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

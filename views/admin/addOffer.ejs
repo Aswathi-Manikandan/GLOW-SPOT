@@ -1,0 +1,103 @@
+
+<!-- views/addOffer.ejs -->
+<%- include('../layouts/side.ejs') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Offer</title>
+    <link rel="stylesheet" href="/styles/addOffer.css"> <!-- Include your custom CSS file -->
+</head>
+<style>
+    /* public/styles/addOffer.css */
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-right: 300px;
+    margin-top: 80px;
+
+}
+
+.heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.offer-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-right: 200px;
+    font-family: 'Times New Roman', Times, serif;
+    
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #172636;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+</style>
+<body>
+    <div class="container">
+        <h1 class="heading">Add New Offer</h1>
+
+        <form action="/admin/offers/add" method="post" class="offer-form">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="discount">Discount (%):</label>
+                <input type="number" id="discount" name="discount" required>
+            </div>
+
+            <div class="form-group">
+                <label for="startingDate">Starting Date:</label>
+                <input type="date" id="startingDate" name="startingDate">
+            </div>
+
+            <div class="form-group">
+                <label for="expiryDate">Expiry Date:</label>
+                <input type="date" id="expiryDate" name="expiryDate" required>
+            </div>
+
+            <button type="submit" class="submit-button">Add Offer</button>
+        </form>
+    </div>
+</body>
+</html>

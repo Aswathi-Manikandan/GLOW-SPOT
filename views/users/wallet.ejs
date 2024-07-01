@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .wallet-container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .wallet-container h1, .wallet-container h2 {
+            text-align: center;
+            color:purple;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .wallet-container .table-wrapper {
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .wallet-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .wallet-container th, .wallet-container td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .wallet-container th {
+            background-color: purple;
+            color: white;
+            font-weight: bold;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .wallet-container tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .wallet-container tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .wallet-container a {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: purple;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .wallet-container a:hover {
+            background-color: purple;
+        }
+        .pagination {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.pagination a {
+    margin: 0 5px;
+    padding: 10px 20px;
+    background-color: purple;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.pagination a.active {
+    background-color: purple;
+}
+
+.pagination a:hover {
+    background-color: purple;
+}
+
+    </style>
+</head>
+<body>
+    
+<% var loggedin = true; %> <!-- You can set it to true or false based on your logic -->
+<%- include('../layouts/user-header.ejs', { loggedin: loggedin, user: user }) %>
+
+<%- include('../layouts/user-sidebar.ejs') %>
+    <div class="wallet-container">
+        <h1>Wallet</h1>
+        <p>Balance: $<%= balance.toFixed(2) %></p>
+
+        <h2>Transactions</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% transactions.forEach(transaction => { %>
+                        <tr>
+                            <td><%= new Date(transaction.date).toLocaleDateString() %></td>
+                            <td><%= transaction.type === 'credit' ? 'Credit' : 'Debit' %></td>
+                            <td>$<%= transaction.amount.toFixed(2) %></td>
+                            <td><%= transaction.description %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+        <a href="/order">Back to Orders</a>
+        <div class="pagination">
+            <% if (currentPage > 1) { %>
+                <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
+            <% } %>
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <a href="?page=<%= i %>&limit=<%= limit %>" <%= i === currentPage ? 'class="active"' : '' %>><%= i %></a>
+            <% } %>
+            <% if (currentPage < totalPages) { %>
+                <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

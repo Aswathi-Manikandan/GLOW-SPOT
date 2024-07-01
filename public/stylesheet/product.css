@@ -1,0 +1,132 @@
+.body{
+    font-family: 'Times New Roman', Times, serif;
+    overflow: hidden;
+    
+}
+h2 {
+    margin-bottom: 20px;
+    margin-left: 20px; 
+    margin-top: 80px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* Styling for product images */
+.img-fluid {
+    width: 20px; /* Set fixed width */
+    height: 20px; /* Set fixed height */
+    border-radius: 50%; /* Make the image round */
+    object-fit: cover; /* Ensure the image covers the entire area */
+}
+
+/* Styling for add new product button */
+.add-product-btn {
+    margin-top: 20px;
+}
+
+/* Footer styling */
+.footer {
+    color: #fff;
+    padding: 20px 0;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1000px) {
+    .add-product-btn {
+        margin-top: 8px;
+    }
+}
+
+/* Sidebar styling */
+.sidebar {
+    width: 200px; /* Set sidebar width */
+    float: left; /* Float sidebar to the left */
+    background-color: #f0f0f0; /* Sidebar background color */
+    padding: 20px; /* Add padding to the sidebar */
+}
+
+/* Content styling */
+.content {
+    margin-left: 200px; /* Set margin to accommodate sidebar width */
+    padding: 20px; /* Add padding to the content */
+}
+
+/* Adjust container alignment for larger screens */
+@media (min-width: 1000px) {
+    .container {
+        margin-left: auto; /* Set left margin to auto to move the container to the right */
+        margin-right: 50px; /* Add margin to the right for balanced spacing */
+        overflow-x: hidden;
+    }
+}
+
+/* Edit button style */
+
+.action-icon {
+    font-size: 20px; /* Adjust the size as needed */
+    color: blue; /* Change the color to suit your design */
+    cursor: pointer;
+    margin: 0 5px;
+}
+.block-icon {
+    color: red;
+}
+.unblock-icon {
+    color: green;
+}
+.action-icon:hover {
+    opacity: 0.7; /* Change the hover effect */
+}
+.edit-icon {
+    font-size: 18px; /* Adjust the size as needed */
+    color: black; /* Change the color to suit your design */
+    cursor: pointer;
+}
+.edit-icon:hover {
+    color: darkblue; /* Change the hover color */
+}
+
+.block-button {
+    background-color: #dc3545; /* Red color */
+}
+
+.unblock-button {
+    background-color: #28a745; /* Green color */
+}
+
+/* Styling for the table */
+.table-responsive {
+    overflow-x: auto; /* Add horizontal scrollbar if table overflows */
+}
+
+table {
+    width: 150%; 
+    border-collapse: collapse; 
+    margin-top: 20px; 
+   
+  
+
+}
+
+/* Styling for table headers */
+table th {
+    text-align: center; /* Center-align table headers */
+    border: 1px solid black;
+    padding: 8px; /* Add padding to table headers */
+    font-family: 'Times New Roman', Times, serif;
+    color: black;
+
+}
+
+/* Styling for table cells */
+table td {
+    text-align: center; /* Center-align table cells */
+    border: 1px solid #000; /* Add border to table cells */
+    padding: 8px; /* Add padding to table cells */
+    font-size: smaller;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* Specific styling for coupon column */
+.coupon-column {
+    width: 150px; /* Set fixed width for coupon column */
+}

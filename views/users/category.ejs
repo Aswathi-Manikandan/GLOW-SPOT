@@ -1,0 +1,429 @@
+<% var loggedin = true; %> <!-- You can set it to true or false based on your logic -->
+<%- include('../layouts/user-header.ejs', { loggedin: loggedin, user: user }) %>
+
+<style>
+    .main{
+        font-family: 'Times New Roman', Times, serif;
+    }
+    .btn-cart {
+        font-size: 16px;
+        padding: 12px 84px;
+        border: none; 
+    }
+   .body{
+    font-family: 'Times New Roman', Times, serif;
+   }
+    .btn-cart:hover {
+        background-color: #ff0000;
+    }
+
+    .search-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        border-radius: 50px; /* Rounded corners */
+        border: 1px solid #ccc; /* Border */
+        padding: 5px 10px; /* Padding inside the container */
+        background-color: #fff; /* Background color */
+        width: 100%;
+        max-width: 400px; /* Max width */
+        margin: 0 auto; /* Center align */
+    }
+
+    .search-input {
+        border: none;
+        outline: none;
+        width: 100%;
+        padding: 10px 40px 10px 20px; /* Padding with space for the icon */
+        border-radius: 50px; /* Rounded corners to match container */
+        font-size: 14px;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .search-button {
+        position: absolute;
+        right: 20px; /* Positioning inside the container */
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0;
+        
+        
+    }
+
+    .search-button i {
+        font-size: 18px;
+        color: #888; /* Icon color */
+    }
+
+    .search-input:focus {
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Focus effect */
+        border-color: #007bff; /* Focus border color */
+    }
+
+    .search-container:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Hover effect */
+    }
+
+
+    .category-link {
+        color: black;
+    }
+    .page-header-wrapper {
+        height: 450px; /* Adjust the height as needed */
+        width: 100%; /* Adjust the width as needed */
+        position: relative;
+        overflow: hidden; /* Ensures content does not overflow */
+        text-align: center; /* Centers the content inside the div */
+    }
+   
+
+    .page-header-image {
+        height: 100%;
+        width: 100%;
+        object-fit: cover; /* Ensures the image covers the div without being zoomed */
+    }
+    .page-title {
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    color: rgb(32, 32, 32); 
+    font-size: 48px; 
+    font-family: 'Times New Roman', Times, serif;
+}
+.widget-body {
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .card.sidebar-shop {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.card.sidebar-shop {
+    border: none;
+    background-color: #f8f9fa;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    margin-right: 5px; /* Move the sidebar slightly to the left */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; 
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.card.sidebar-shop:hover {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2); /* Example of box-shadow change on hover */
+    transform: translateX(-5px); /* Example of transform change on hover */
+}
+
+.card-header {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+}
+
+.card-header h3.card-title a {
+    color: #333;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.card-header h3.card-title a:hover {
+    color: #007bff;
+}
+
+.card-body {
+    padding-top: 10px;
+}
+
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
+
+.list-unstyled li {
+    margin-bottom: 8px;
+}
+
+.category-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.category-link:hover {
+    color: #007bff;
+}
+.toolbox-layout{
+    margin-right: 110px;
+}
+.product-media {
+    overflow: hidden;
+    position: relative;
+}
+
+.product-image {
+    transition: transform 0.3s ease;
+}
+
+.product-media:hover .product-image {
+    transform: scale(1.1);
+}
+.toolbox-layout {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: flex-start; /* Align items to the start of the container */
+    gap: 5px; /* Small gap between label and select box */
+    margin-right: 110px;
+    padding: 10px;
+    
+    border-radius: 15px;
+   
+}
+
+.sort-label {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+    
+}
+
+.sort-select {
+    padding: 10px;
+    font-size: 15px;
+    font-family: 'Times New Roman', Times, serif;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    outline: none;
+    appearance: none; /* Removes default styling */
+    background: #fff url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23007bff" d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>') no-repeat right 10px center;
+    background-size: 10px;
+    width: 200px;
+}
+
+.sort-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+</style>
+<body>
+    
+
+<main class="main">
+    <div class="page-header-wrapper">
+        <img src="images/allbg.jpeg" alt="Background Image" class="page-header-image">
+        <div class="container">
+            <h1 class="page-title">SHOP<span></span></h1>
+        </div>
+    </div>
+    
+    
+    
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Grid 3 Columns</li>
+            </ol>
+        </div>
+        
+    </nav>
+    <br>
+    
+    <form action="/category" method="GET" class="search-form">
+        <div class="search-container">
+            <input type="text" name="search" placeholder="Search" value="<%= searchQuery %>" required class="search-input">
+            <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+        </div>
+        <input type="hidden" name="sort" value="<%= sort %>">
+        <input type="hidden" name="category" value="<%= categoryFilter %>">
+    </form>
+    <div class="toolbox-right">
+        <aside>
+           
+            
+        </aside>
+    </div>
+    <br><br>
+    <div class="page-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="toolbox">
+                        <div class="toolbox-left">
+                            <div class="toolbox-info">
+                                Showing <span>9 of <%= totalProducts %> Products</span>
+                            </div>
+                        </div>
+
+                        <div class="toolbox-right">
+                            <div class="toolbox-layout">
+                                <!-- Toolbox Layout Content -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="products mb-3" id="product-container">
+                        <div class="row justify-content-center">
+                            <% products.forEach(product => { %>
+                                <% if (product.category && !product.category.deleted) { %>
+                                    <div class="col-6 col-md-4 col-lg-4 product-item" data-category="<%= product.category.name %>">
+                                        <div class="product product-7 text-center">
+                                            <figure class="product-media">
+                                                <% if (product.quantity > 0) { %>
+                                                    <% if (product.quantity <= 3) { %>
+                                                        <span class="product-label label-out-of-stock" style="color: red;">Hurry up!!!! Few are left</span>
+                                                    <% } else { %>
+                                                        <span class="product-label label-new">New</span>
+                                                    <% } %>
+                                                <% } else { %>
+                                                    <span class="product-label label-out-of-stock" style="color: red;">Out of Stock</span>
+                                                <% } %>
+                                                <a href="/product/<%= product._id %>">
+                                                    <img src="<%= product.pictures[0] %>" alt="<%= product.name %>" class="product-image">
+                                                </a>
+                                            
+                                                <div class="product-action-vertical">
+                                                    <button class="btn-product-icon btn-wishlist btn-expandable" onclick="addToWishlist('<%= product._id %>')">
+                                                        <span>Add to Wishlist</span>
+                                                    </button>
+                                                     </div>
+                                                
+                                                <div class="product-action">
+                                                    <% if (loggedin) { %>
+                                                        <form id="addToCartForm_<%= product._id %>" action="/cart/add-to-cart/<%= product._id %>" method="POST">
+                                                            <button type="submit" class="btn-product btn-cart"><span>Add to Cart</span></button>
+                                                        </form>
+                                                    <% } else { %>
+                                                        <a href="/login" class="btn-product btn-cart"><span>Add to Cart</span></a>
+                                                    <% } %>
+                                                </div>
+                                            </figure>
+                                            
+                                            <div class="product-body">
+                                                <div class="product-cat">
+                                                    <a href="#"><%= product.category.name %></a>
+                                                </div>
+                                                <h3 class="product-title"><a href="/product/<%= product._id %>"><%= product.name %></a></h3>
+                                                <div class="product-price">
+                                                    <% if (product.discountedPrice && product.discountedPrice !== product.price.toFixed(2)) { %>
+                                                        <span class="old-price">$<%= product.price.toFixed(2) %></span>
+                                                        <span class="new-price">$<%= product.discountedPrice %></span>
+                                                    <% } else { %>
+                                                        $<%= product.price.toFixed(2) %>
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            <% }); %>
+                        </div>
+                    </div>
+                    
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <% if (currentPage > 1) { %>
+                                <li class="page-item">
+                                    <a class="page-link page-link-prev" href="?page=<%= currentPage - 1 %>&search=<%= searchQuery %>&sort=<%= sort %>&category=<%= categoryFilter %>" aria-label="Previous">
+                                        <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+                                    </a>
+                                </li>
+                            <% } %>
+                            <% for (let i = 1; i <= totalPages; i++) { %>
+                                <li class="page-item <%= currentPage === i ? 'active' : '' %>" aria-current="page">
+                                    <a class="page-link" href="?page=<%= i %>&search=<%= searchQuery %>&sort=<%= sort %>&category=<%= categoryFilter %>"><%= i %></a>
+                                </li>
+                            <% } %>
+                            <% if (currentPage < totalPages) { %>
+                                <li class="page-item">
+                                    <a class="page-link page-link-next" href="?page=<%= currentPage + 1 %>&search=<%= searchQuery %>&sort=<%= sort %>&category=<%= categoryFilter %>" aria-label="Next">
+                                        Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                                    </a>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <aside class="col-lg-3 order-lg-first">
+                    <div class="toolbox-layout">
+                        <label for="sort" class="sort-label">Sort by:</label>
+                        <select id="sort" class="sort-select" onchange="updateQueryParam('sort', this.value)">
+                            <option value="default" <%= sort === 'default' ? 'selected' : '' %>>Default</option>
+                            <option value="price-high-low" <%= sort === 'price-high-low' ? 'selected' : '' %>>Price: High to Low</option>
+                            <option value="price-low-high" <%= sort === 'price-low-high' ? 'selected' : '' %>>Price: Low to High</option>
+                            <option value="alpha-asc" <%= sort === 'alpha-asc' ? 'selected' : '' %>>Alphabetical Order (A-Z)</option>
+                            <option value="alpha-desc" <%= sort === 'alpha-desc' ? 'selected' : '' %>>Alphabetical Order (Z-A)</option>
+                        </select>
+                    </div>
+                    <br><br>
+                    <div class="card sidebar sidebar-shop">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
+                                    Category
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="collapse show" id="widget-1">
+                            <div class="card-body">
+                                <div class="filter-items filter-items-count">
+                                    <div class="filter-item">
+                                        <ul class="list-unstyled">
+                                            <li><a href="/category?search=<%= searchQuery %>&sort=<%= sort %>&category=all" class="category-link">All</a></li>
+                                            <% categories.forEach(category => { %>
+                                                <li><a href="/category?search=<%= searchQuery %>&sort=<%= sort %>&category=<%= category.name %>" class="category-link"><%= category.name %></a></li>
+                                            <% }); %>
+                                            <li><a href="/category?clear=true" class="category-link">Clear</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('../layouts/footer.ejs') %>
+
+<script>
+    function updateQueryParam(key, value) {
+        const params = new URLSearchParams(window.location.search);
+        params.set(key, value);
+        params.set('page', '1'); // Reset to first page on filter/sort change
+        window.location.search = params.toString();
+    }
+
+    async function addToWishlist(productId) {
+        try {
+            const response = await fetch(`/wishlist/add-to-wishlist/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add product to wishlist');
+            }
+
+            alert('Product added to wishlist successfully!');
+        } catch (error) {
+            console.error('Error adding product to wishlist:', error);
+        }
+    }
+    
+</script>
+
+</body>

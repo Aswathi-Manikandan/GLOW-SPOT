@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Users</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/stylesheet/side.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #1f2d3d;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .side-header {
+            padding: 20px;
+            text-align: center;
+            background-color: #273c51;
+        }
+
+        .side-header h3 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #fff;
+        }
+
+        .side-header span {
+            color: #4aa3df;
+        }
+
+        .side-content {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile h4 {
+            margin: 10px 0 5px 0;
+            font-size: 1.2em;
+        }
+
+        .profile small {
+            color: #4aa3df;
+        }
+
+        .side-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .side-menu ul li {
+            margin-bottom: 20px;
+        }
+
+        .side-menu ul li a {
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+
+        .side-menu ul li a span {
+            margin-right: 10px;
+        }
+
+        .side-menu ul li a:hover {
+            color: #4aa3df;
+        }
+
+        .side-menu ul li a i {
+            color: #4aa3df;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="side-header">
+            <h3>Glow<span>Spot</span></h3>
+        </div>
+        
+        <div class="side-content">
+            <div class="profile">
+                <h4>Aswathi Manikandan</h4>
+                <small>Developer</small>
+            </div>
+    
+            <div class="side-menu">
+                <ul>
+                    <li>
+                        <a href="/admin/home" class="dashboard-link">
+                            <i class="fas fa-home"></i>
+                            <small>Dashboard</small>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/usermanagement">
+                            <i class="fas fa-user-alt"></i>
+                            <small>Users</small>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/category">
+                            <i class="fas fa-list-alt"></i>
+                            <small>Category</small>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/products">
+                            <i class="fas fa-box"></i>
+                            <small>Product</small>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/coupons">
+                            <i class="fas fa-tag"></i>
+                            <small>Coupons</small>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/offers">
+                            <i class="fas fa-tags"></i>
+                            <small>Offer</small>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/orders">
+                            <i class="fas fa-shopping-bag"></i>
+                            <small>Orders</small>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/sales">
+                            <i class="fas fa-chart-line"></i>
+                            <small>Sales Report</small>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <small>Logout</small>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <!-- Your main content here -->
+    </div>
+</body>
+</html>

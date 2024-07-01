@@ -1,0 +1,191 @@
+<style>
+    body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 26%;
+    max-width: 1200px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 8px 32px 0 rgba(201, 202, 218, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    overflow: hidden;
+    margin-top: 150px;
+    flex-direction: column;
+    text-align: center;
+}
+
+.form-box {
+    width: 100%;
+    max-width: 400px;
+    color: black;
+    text-align: center;
+}
+
+.form-tab h3 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin: 10px 0;
+}
+
+.form-group label {
+    color: white;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    background: white;
+    color: black;
+}
+
+.form-footer {
+    margin-top: 20px;
+}
+
+.btn {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px;
+}
+
+#countdown {
+    color: white;
+    margin-top: 20px;
+}
+
+#error-message {
+    color: rgb(225, 68, 68);
+    margin-bottom: 20px;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-top: 20px;
+    position: absolute;
+    top: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.glow-text {
+    font-size: 5rem;
+    color: #fff;
+    text-align: center;
+    animation: fadeIn 3s forwards, slideInFromTop 3s forwards;
+    opacity: 0;
+    margin: 0;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromTop {
+    from {
+        transform: translateY(-50px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+</style>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="/stylesheet/styles.css">
+</head>
+<body>
+    <div class="content">
+        <h1 class="glow-text">Glow Spot</h1>
+    </div>
+    <div class="container">
+        <div class="form-box">
+            <div class="form-tab">
+                <h3>OTP Verification</h3>
+                <form action="/verify-otp" method="post">
+                    <div class="form-group">
+                        <label for="otp">Enter 4-digit OTP</label>
+                        <input type="text" class="form-control" id="otp" name="otp" maxlength="4" pattern="\d{4}" title="Please enter a 4-digit OTP" required>
+                    </div>
+                    <p id="error-message"><%= message %></p>
+                    <div class="form-footer">
+                        <button type="submit" class="btn">VERIFY OTP</button>
+                        <a href="/register" class="btn">GO BACK</a>
+                    </div>
+                </form>
+            </div>
+            <div id="button-container" style="display: none;">
+                <button class="btn" id="resend-btn" onclick="alerts()">Resend OTP</button>
+            </div>
+            <div id="countdown"></div>
+        </div>
+    </div>
+
+   
+    <script>
+        let otpDuration = 120; // 2 minutes
+        const otpTimerElement = document.getElementById('countdown');
+
+        function updateTimer() {
+            const minutes = Math.floor(otpDuration / 60);
+            const seconds = otpDuration % 60;
+            const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            otpTimerElement.textContent = `Time remaining: ${formattedTime}`;
+            otpDuration--;
+            if (otpDuration < 0) {
+                clearInterval(timerInterval);
+                otpTimerElement.textContent = 'Time expired';
+            }
+        }
+
+        updateTimer();
+        const timerInterval = setInterval(updateTimer, 1000);
+
+        setTimeout(function() {
+            document.getElementById('button-container').style.display = 'block';
+        }, 120000);
+
+        function alerts(){
+            alert("Resend OTP has been sent to your Email");
+        }
+    </script>
+</body>
+</html>

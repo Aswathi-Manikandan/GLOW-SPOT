@@ -1,0 +1,294 @@
+<% var loggedin = true; %> <!-- You can set it to true or false based on your logic -->
+<%- include('../layouts/user-header.ejs', { loggedin: loggedin }) %>
+
+<style>
+    .main,.h2{
+        font-family: 'Times New Roman', Times, serif;
+    }
+    .nav-item{
+        font-family: 'Times New Roman', Times, serif;
+    }
+    body{
+        font-family: 'Times New Roman', Times, serif;
+    }
+</style>
+<body>
+    
+
+    <main class="main">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+            <div class="container d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Products</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Default</li>
+                </ol>
+               
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+    
+        <div class="page-content">
+            <div class="container">
+                <div class="product-details-top">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="product-gallery product-gallery-vertical">
+                                <div class="row">
+                                    <figure class="product-main-image">
+                                        <img id="product-zoom" src="<%= product.pictures[0] %>" data-zoom-image="<%= product.pictures[0] %>" alt="product image">
+                                        <a href="#" id="btn-product-gallery" class="btn-product-gallery">
+                                            <i class="icon-arrows"></i>
+                                        </a>
+                                    </figure><!-- End .product-main-image -->
+    
+                                    <div id="product-zoom-gallery" class="product-image-gallery">
+                                        <% product.pictures.forEach((picture, index) => { %>
+                                            <a class="product-gallery-item <%= index === 0 ? 'active' : '' %>" href="#" data-image="<%= picture %>" data-zoom-image="<%= picture %>">
+                                                <img src="<%= picture %>" alt="product side">
+                                            </a>
+                                        <% }); %>
+                                    </div><!-- End .product-image-gallery -->
+                                </div><!-- End .row -->
+                            </div><!-- End .product-gallery -->
+                        </div><!-- End .col-md-6 -->
+                          
+                        <div class="col-md-6">
+                            <div class="product-details">
+                                <br><br><br>
+                                <h1 class="product-title"><%= product.name %></h1><!-- End .product-title -->
+                                <br>
+                               
+                                  
+                                    <% if (product.offer && product.offer.discount) { %>
+                                        <% const discount = (product.price * (1 - product.offer.discount / 100)).toFixed(2); %>
+                                        <div class="product-price">
+                                            <span class="old-price">$<%= product.price.toFixed(2) %></span>
+                                            <span class="new-price">$<%= discount %></span>
+                                        </div>
+                                    <% } else { %>
+                                        <div class="product-price">
+                                            $<%= product.price.toFixed(2) %>
+                                        </div>
+                                    <% } %>
+                                    
+
+                                
+                                <% if (product.quantity <= 3) { %>
+                                    <div class="few-left-message">
+                                        <p style="color: rgb(163, 25, 25);">Hurry up!!!! <br> Few are left</p>
+                                    </div>
+                                <% } %>
+                               
+                                    <br>
+                                    <div class="details-filter-row details-row-size d-flex align-items-center">
+                                        <label for="available-qty" class="mr-2">Available Quantity:</label>
+                                        <div class="product-details-quantity">
+                                            <% if (product.quantity > 0) { %>
+                                                <span id="available-qty" class="available-quantity font-weight-bold"><%= product.quantity %></span>
+                                            <% } else { %>
+                                                <span class="out-of-stock-message text-danger font-weight-bold">Out of Stock</span>
+                                            <% } %>
+                                        </div><!-- End .product-details-quantity -->
+                                    </div><!-- End .details-filter-row -->
+                                    
+                                    <div class="details-filter-row details-row-size">
+                                        <label for="category">Category:</label>
+                                        <div class="product-details-category">
+                                            <span><%= product.category.name %></span>
+                                        </div><!-- End .product-details-category -->
+                                    </div><!-- End .details-filter-row -->
+                                   
+                                    <div class="product-details-action">
+                                        <% if (product.quantity > 0) { %>
+                                            <form id="addToCartForm_<%= product._id %>" action="/cart/add-to-cart/<%= product._id %>" method="POST">
+                                                <button type="submit" class="btn-product btn-cart"><span>Add to Cart</span></button>
+                                            </form>
+                                        <% } else { %>
+                                            <button type="button" class="btn-product btn-cart" disabled><span>Out of Stock</span></button>
+                                        <% } %>
+                                    </div><!-- End .product-details-action -->
+                                    </form>
+                                    
+                                    <div class="details-action-wrapper">
+                                        <div class="details-action-wrapper">
+                                            <a href="#" class="btn-product btn-wishlist" title="Add to Wishlist" onclick="addToWishlist('<%= product._id %>')"><span>Add to Wishlist</span></a>
+                                           
+                                        </div><!-- End .details-action-wrapper -->
+                                        
+                                        
+                                    </div><!-- End .details-action-wrapper -->
+                                </div><!-- End .product-details-action -->
+    
+                                
+    
+                                    <div class="social-icons social-icons-sm">
+                                        <span class="social-label">Share:</span>
+                                        <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                                        <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                                        <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                                        <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                                    </div>
+                                </div><!-- End .product-details-footer -->
+                            </div><!-- End .product-details -->
+                        </div><!-- End .col-md-6 -->
+                    </div><!-- End .row -->
+                </div><!-- End .product-details-top -->
+            </div><!-- End .container -->
+        </div><!-- End .page-content -->
+    </main>
+    
+    <div class="product-details-tab">
+        <ul class="nav nav-pills justify-content-center" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab" role="tab" aria-controls="product-desc-tab" aria-selected="true">Description</a>
+            </li>
+           
+          
+            
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel" aria-labelledby="product-desc-link">
+                <div class="product-desc-content">
+                    <h3>Product Information</h3>
+                    <%= product.description %>
+                </div><!-- End .product-desc-content -->
+            </div><!-- .End .tab-pane -->
+            <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link">
+                <div class="product-desc-content">
+                   
+                </div><!-- End .product-desc-content -->
+            </div><!-- .End .tab-pane -->
+          
+        </div><!-- End .tab-content -->
+    </div><!-- End .product-details-tab -->
+
+
+                    <h2 class="title text-center mb-4">Related Products</h2><!-- End .title text-center -->
+
+                
+                        <main class="main">
+                            <div class="container">
+                                
+                                <div class="row">
+                                    <% relatedProducts.forEach(product => { %>
+                                        <div class="col-md-3">
+                                            <div class="product product-7 text-center">
+                                                <figure class="product-media">
+                                                    <% if (product.status === 'new') { %>
+                                                        <span class="product-label label-new">New</span>
+                                                    <% } else if (product.status === 'out_of_stock') { %>
+                                                        <span class="product-label label-out">Out of Stock</span>
+                                                    <% } %>
+
+                                                    
+
+                                                    <a href="/product/<%= product._id %>">
+                                                        <img src="<%= product.pictures[0] %>" alt="Product image" class="product-image">
+                                                    </a>
+                                                    <div class="product-action-vertical">
+                                                        <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                                        <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
+                                                        <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
+                                                    </div><!-- End .product-action-vertical -->
+                                                    <div class="product-action">
+                                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                                    </div><!-- End .product-action -->
+                                                </figure><!-- End .product-media -->
+                                                <div class="product-body">
+                                                    
+                                                    <!-- End .product-cat -->
+                                                    <h3 class="product-title"><a href="/product/<%= product._id %>"><%= product.name %></a></h3><!-- End .product-title -->
+                                                  <!-- Assuming product object includes offer information -->
+<% if (product.offer && product.offer.discount) { %>
+    <% const discount = (product.price * (1 - product.offer.discount / 100)).toFixed(2); %>
+    <div class="product-price">
+        <span class="old-price">$<%= product.price.toFixed(2) %></span>
+        <span class="new-price">$<%= discount %></span>
+    </div>
+<% } else { %>
+    <div class="product-price">
+        $<%= product.price.toFixed(2) %>
+    </div>
+<% } %>
+
+                                                </div><!-- End .product-body -->
+                                            </div><!-- End .product -->
+                                        </div><!-- End .col-md-3 -->
+                                    <% }); %>
+                                </div><!-- End .row -->
+                            </div><!-- End .container -->
+                        </main><!-- End .main -->
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const qtyInput = document.getElementById('qty');
+                                const outOfStockMessage = document.querySelector('.out-of-stock-message');
+                                const addToCartForm = document.getElementById('addToCartForm_<%= product._id %>');
+                        
+                                if (qtyInput && outOfStockMessage) {
+                                    if (qtyInput.value === '0') {
+                                        qtyInput.style.display = 'none'; // Hide quantity input
+                                        outOfStockMessage.style.display = 'block'; // Show out of stock message
+                                        addToCartForm.style.display = 'none'; // Hide Add to Cart button
+                                    }
+                        
+                                    qtyInput.addEventListener('change', () => {
+                                        if (qtyInput.value === '0') {
+                                            qtyInput.style.display = 'none'; // Hide quantity input
+                                            outOfStockMessage.style.display = 'block'; // Show out of stock message
+                                            addToCartForm.style.display = 'none'; // Hide Add to Cart button
+                                        } else {
+                                            qtyInput.style.display = 'block'; // Show quantity input
+                                            outOfStockMessage.style.display = 'none'; // Hide out of stock message
+                                            addToCartForm.style.display = 'block'; // Show Add to Cart button
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
+
+<!-- Add this script section in your EJS template -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+    async function addToWishlist(productId) {
+        try {
+            const response = await fetch(`/wishlist/add-to-wishlist/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert(data.message); // Display success message
+            } else if (response.status === 401) {
+                // Display SweetAlert message for login
+                swal({
+                    title: "Login Required",
+                    text: "Please login to add items to your wishlist.",
+                    icon: "info",
+                    buttons: {
+                        cancel: "Cancel",
+                        login: "Login"
+                    }
+                }).then((value) => {
+                    if (value === "login") {
+                        window.location.href = "/login"; // Redirect to login page
+                    }
+                });
+            } else {
+                throw new Error('Failed to add product to wishlist');
+            }
+        } catch (error) {
+            console.error('Error adding product to wishlist:', error);
+        }
+    }
+</script>
+
+
+        </body>
+
+
+<%- include('../layouts/footer.ejs') %>

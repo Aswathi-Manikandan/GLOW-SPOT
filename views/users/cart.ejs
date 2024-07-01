@@ -1,0 +1,260 @@
+<% var loggedin = true; %> <!-- You can set it to true or false based on your logic -->
+<%- include('../layouts/user-header.ejs', { loggedin: loggedin }) %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shopping Cart</title>
+    <style>
+        .my-body {
+            height: fit-content;
+            background: #FAFAFA;
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+        .my-logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .my-options {
+            font-size: 1em;
+        }
+        .my-cart-list {
+            margin: 2em auto;
+            padding: 2em;
+            background: #FFF;
+            border-radius: 0.5em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 800px;
+        }
+        .my-cart-header {
+            padding: 1em;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #CCC;
+            font-weight: bold;
+            background: #EEE;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .my-cart-body {
+            padding: 1em 0;
+        }
+        .my-item-details {
+            display: flex;
+            justify-content: space-between;
+            padding: 1em 0;
+            border-bottom: 1px solid #EEE;
+        }
+        .my-item-details:last-child {
+            border-bottom: none;
+        }
+        .fourty {
+            flex: 2;
+        }
+        .twenty {
+            flex: 1;
+            text-align: center;
+        }
+        .input-quantity {
+            text-align: center;
+            width: 50px;
+        }
+        .remove-item-button {
+            background: transparent;
+            border: none;
+            color: #701310;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+        .remove-item-button i {
+            font-size: 1.2em;
+        }
+        .my-item-image {
+            width: 60px;
+            height: 60px;
+            margin-right: 1em;
+            border-radius: 0.3em;
+        }
+        .totals {
+            margin-top: 2em;
+        }
+        .totals .totals-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1em;
+        }
+        .totals .totals-item label {
+            font-weight: bold;
+        }
+        .proceed-to-checkout-button {
+            text-align: right;
+            margin-top: 1em;
+        }
+        .proceed-to-checkout-button a {
+            background: #157a15;
+            color: white;
+            padding: 0.5em 1em;
+            border-radius: 0.3em;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .proceed-to-checkout-button a:hover {
+            background: #4CAE4C;
+        }
+        .empty-cart-message {
+            text-align: center;
+            color: #D9534F;
+            font-size: 1.5em;
+            padding: 2em;
+        }
+        .centered-heading {
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .my-cart-header{
+            color: black;
+        }
+    </style>
+</head>
+
+<body class="my-body">
+
+    <div class="my-cart-list">
+        <h2 class="centered-heading">Shopping Cart</h2><br><br>
+        <% if (products.length === 0 && user) { %>
+            <p class="empty-cart-message">Cart is empty.</p>
+        <% } else { %>
+            <div class="my-cart-header">
+                <div class="fourty">Product</div>
+                <div class="twenty">Price</div>
+                <div class="twenty">Quantity</div>
+                <div class="twenty">Subtotal</div>
+            </div>
+    
+            <div class="my-cart-body">
+                <% let subtotal = 0; %>
+                <% products.forEach(product => { %>
+                    <% const productPrice = product.product.discount || product.product.price; %>
+                    <% subtotal += productPrice * product.quantity; %>
+                    <div class="my-item-details">
+                        <div class="fourty">
+                            <a href="#"><img src="<%= product.product.pictures[0] %>" alt="<%= product.product.name %>" class="my-item-image"></a>
+                            <%= product.product.name %>
+                        </div>
+                        <div class="twenty">$<%= productPrice.toFixed(2) %></div>
+                        <div class="twenty">
+                            <span class="quantity-decrement" onclick="decrementQuantity('<%= product.product._id %>')"></span>
+                            <input class="input-quantity" type="number" value="<%= product.quantity %>" min="1" max="<%= product.product.maxQuantityPerPerson %>" step="1" onchange="updateQuantity('<%= product.product._id %>', this.value)" data-product-id="<%= product.product._id %>" data-available-quantity="<%= product.product.quantity %>"/>
+                            <span class="quantity-increment" onclick="incrementQuantity('<%= product.product._id %>')"></span>
+                            <!-- Display error message if quantity exceeds available quantity -->
+                            <% if (product.quantity > product.product.quantity) { %>
+                                <p class="error-message">Cannot add more than <%= product.product.quantity %> of this product.</p>
+                            <% } %>
+                            <!-- Display error message if quantity exceeds max quantity per person -->
+                            <% if (product.quantity > product.product.maxQuantityPerPerson) { %>
+                                <p class="error-message">Cannot add more than <%= product.product.maxQuantityPerPerson %> of this product per person.</p>
+                            <% } %>
+                        </div>
+                        <div class="twenty">$<%= (productPrice * product.quantity).toFixed(2) %></div>
+                        <button class="remove-item-button" onclick="removeFromCart('<%= product.product._id %>')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                <% }); %>
+    
+                <% if (products.length > 0 && user) { %>
+                    <div class="totals">
+                        <div class="totals-item">
+                            <label>Subtotal:</label>
+                            <div class="totals-value">$<%= subtotal.toFixed(2) %></div>
+                        </div>
+                        <div class="proceed-to-checkout-button">
+                            <% if (outOfStock) { %>
+                                <p class="error-message">Some items in your cart are out of stock. Please remove them before proceeding to checkout.</p>
+                            <% } else { %>
+                                <a href="/checkout">Proceed to Checkout</a>
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+    
+    <script>
+        function removeFromCart(productId) {
+            fetch(`/cart/remove-from-cart/${productId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload(); // Reload the page to reflect the changes
+                } else {
+                    throw new Error('Failed to remove product from cart');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while removing the product from the cart.');
+            });
+        }
+    
+        function updateQuantity(productId, newQuantity) {
+            fetch(`/cart/update-quantity/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ quantity: newQuantity })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Quantity updated successfully') {
+                    location.reload();
+                } else if (data.error) {
+                    alert(data.error); // Display the error message returned from the server
+                } else {
+                    alert('An unexpected error occurred.'); // Handle unexpected errors
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the quantity.');
+            });
+        }
+    
+        function incrementQuantity(productId) {
+            const input = document.querySelector(`.input-quantity[data-product-id="${productId}"]`);
+            if (input) {
+                const currentValue = parseInt(input.value);
+                const maxQuantity = parseInt(input.getAttribute('max'));
+                const availableQuantity = parseInt(input.getAttribute('data-available-quantity'));
+                if (currentValue < Math.min(maxQuantity, availableQuantity)) {
+                    input.value = currentValue + 1;
+                    updateQuantity(productId, input.value);
+                } else {
+                    alert(`Cannot add more than ${Math.min(maxQuantity, availableQuantity)} of this product.`);
+                }
+            }
+        }
+    
+        function decrementQuantity(productId) {
+            const input = document.querySelector(`.input-quantity[data-product-id="${productId}"]`);
+            if (input) {
+                const currentValue = parseInt(input.value);
+                if (currentValue > 1) {
+                    input.value = currentValue - 1;
+                    updateQuantity(productId, input.value);
+                }
+            }
+        }
+    </script>
+    
+</body>
+</html>

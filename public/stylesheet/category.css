@@ -1,0 +1,176 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.container {
+    width: 800%;
+    max-width: 1000px; /* Set a maximum width */
+   
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-container input[type="text"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    width: 60%; /* Adjust the width as needed */
+}
+
+.search-container button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: rgb(29, 50, 63);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: rgb(34, 53, 66)
+}
+
+.table-container {
+    overflow-x: auto; /* Add horizontal scrolling */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: center;
+    padding: 10px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+th {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.add-button-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.add-button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: rgb(27, 51, 66);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.add-button:hover {
+    background-color: rgb(21, 37, 48);
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 600px) {
+    .search-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-container input[type="text"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+    /* Add color and styles for buttons */
+.button-container {
+    display: flex; /* Display buttons side by side */
+}
+
+.edit-button,
+.block-button,
+.unblock-button {
+    margin-right: 10px; /* Add margin between buttons */
+    padding: 8px 16px; /* Add padding to buttons */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #172636; /* Blue color for edit button */
+    color: #fff; /* White text color */
+}
+
+.block-button {
+    background-color: #52181e; /* Red color for block button */
+    color: #fff; /* White text color */
+}
+
+.unblock-button {
+    background-color: #20582e; /* Green color for unblock button */
+    color: #fff; /* White text color */
+}
+/* Add margin to move buttons to the right */
+.button-container {
+    display: flex; /* Display buttons side by side */
+    margin-left: 150px; /* Add margin to move buttons to the right */
+}
+
+.pagination-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+}
+
+.page-item {
+    display: inline;
+    margin-right: 5px;
+}
+
+.page-link {
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #203246;
+    border: 1px solid #162738;
+    border-radius: 4px;
+}
+
+.page-item.active .page-link {
+    background-color: #142435;
+    color: #fff;
+}
+
+.page-link:hover {
+    background-color: #f0f0f0;
+}

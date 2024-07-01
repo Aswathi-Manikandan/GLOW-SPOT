@@ -1,0 +1,36 @@
+<%- include('../layouts/side.ejs') %>
+
+<link rel="stylesheet" href="/stylesheet/categoryadd.css">
+<style>
+    .error-message {
+        color: red; /* Set color to red */
+        font-size: 14px; /* Reduce font size */
+    }
+</style>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center"> <!-- Center the heading -->
+                    <h2>Add Category</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Form to add a new category -->
+                    <form action="/admin/category/add" method="POST">
+                        <div class="form-group">
+                            <label for="categoryName">Category Name:</label>
+                            <input type="text" id="categoryName" name="name" class="form-control" required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Add Category</button>
+                        </div>
+                    </form>
+                    <!-- Display error message if it exists -->
+                    <% if (message) { %>
+                        <p class="error-message"><%= message %></p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
