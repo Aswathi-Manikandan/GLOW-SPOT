@@ -372,12 +372,12 @@ const razorpayInstance = new Razorpay({
 const createRazorpayOrder = async (req, res) => {
     try {
         const { amount, currency = 'INR' } = req.body;
-        
-        // Convert amount to integer (smallest currency unit)
+
+        // Convert amount to the smallest currency unit
         const amountInSmallestUnit = Math.round(amount * 100);
 
         // Validate amount range
-        const maxAmountAllowed = 100000000;
+        const maxAmountAllowed = 100000000; // Example max amount
         if (amountInSmallestUnit > maxAmountAllowed) {
             return res.status(400).json({ error: 'Amount exceeds maximum amount allowed by Razorpay' });
         }
@@ -387,14 +387,24 @@ const createRazorpayOrder = async (req, res) => {
             currency: currency,
         };
 
+        // Create order with Razorpay
         const order = await razorpayInstance.orders.create(options);
+
+        // Log the order to see its structure
+        console.log('Razorpay order created:', order);
+
+        // Check if order and order.status exist
+        if (!order || !order.status) {
+            console.error('Invalid Razorpay order response:', order);
+            return res.status(500).json({ error: 'Invalid Razorpay order response' });
+        }
+
         res.json(order);
     } catch (error) {
         console.error('Error creating Razorpay order:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 };
-
 
 
 
