@@ -1,23 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            font-family: 'Times New Roman', Times, serif;
+        }
 
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding-top: 20px;
+            position: absolute;
+            top: 20px;
+        }
 
+        .glow-text {
+            font-size: 4rem;
+            color: #fff;
+            text-align: center;
+            animation: fadeIn 3s forwards, slideInFromTop 3s forwards;
+            opacity: 0;
+            margin: 0;
+        }
 
-<link rel="stylesheet" href="/stylesheet/admin.css">
-<div align="center">
-    <h1>Admin Login</h1>
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
 
-    <% if (typeof message !== 'undefined') { %>
-        <h3><%= message %></h3>
-    <% } %>
+        @keyframes slideInFromTop {
+            from {
+                transform: translateY(-50px);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
 
-    <form action="" method="POST">
-        <input type="email" name="email" placeholder="Enter Email" required>
-        <br>
-        <input type="password" name="password" placeholder="Enter Password" required>
-        <br>
-        <input type="submit" value="Login">
-    </form>
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            max-width: 1200px;
+            height: 440px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 8px 32px 0 rgba(201, 202, 218, 0.37);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            overflow: hidden;
+            margin-top: 150px;
+        }
 
-   
-</div>
+        .half {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
+        .half img {
+            max-width: 120%;
+            height: auto;
+            border-radius: 10px;
+        }
 
+        .login-form {
+            width: 100%;
+            max-width: 400px;
+            color: black;
+            text-align: center;
+        }
+
+        .login-form h1, .login-form h4, .login-form h5 {
+            color: white;
+        }
+
+        .login-form input[type="email"],
+        .login-form input[type="password"],
+        .login-form input[type="submit"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            background: white;
+            color: black;
+        }
+
+        .login-form input[type="submit"] {
+            background-color: black;
+            color: white;
+            cursor: pointer;
+            width: 80px;
+            margin-left: 5px;
+        }
+
+        .login-form a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1 class="glow-text">Admin Login</h1>
+    </div>
+    <div class="center-container">
+        <div class="half">
+            <img src="images/admin log.jpg" alt="Login Image">
+        </div>
+        <div class="half">
+            <div class="login-form">
+                <h1>Admin Login</h1>
+
+                <% if (typeof message !== 'undefined') { %>
+                    <h4><%= message %></h4>
+                <% } %>
+
+                <form action="" method="POST">
+                    <input type="email" name="email" placeholder="Enter Email" required>
+                    <br>
+                    <input type="password" name="password" placeholder="Enter Password" required>
+                    <br>
+                    <input type="submit" value="Login">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
