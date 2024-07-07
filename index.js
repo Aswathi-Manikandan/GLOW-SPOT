@@ -11,7 +11,7 @@ const Product = require('./models/productModel')
 const mongoURL = process.env.MONGO_URL;
 
 
-mongoose.connect('mongodb://localhost:27017/Better', {
+mongoose.connect('mongodb+srv://aswathiachus935:mxwY1RCscmSWEhoX@cluster0.usljjhr.mongodb.net/?', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {

@@ -163,7 +163,76 @@
             border-radius: 8px;
             height: 100%;
         }
+        .icon-section {
+            background-color: #fff;
+            padding: 40px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-box {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            color: #333;
+            margin: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .icon-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon-box-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #ff5722; /* Change icon color here */
+        }
+
+        .icon-box-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .icon-box-content p {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .col-lg-3, .col-sm-6 {
+            flex: 1 0 21%; /* Adjust the flex-basis to ensure proper spacing */
+            max-width: 25%;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        @media (max-width: 992px) {
+            .col-lg-3 {
+                max-width: 50%;
+                flex: 1 0 46%; /* Adjust for better spacing */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .col-sm-6 {
+                max-width: 100%;
+                flex: 1 0 90%; /* Adjust for better spacing */
+            }
+        }
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 
 
@@ -326,6 +395,59 @@
             </div><!-- .End .tab-pane -->
             <!-- Repeat the above structure for other tabs if needed -->
         </div><!-- End .tab-content -->
+        <div class="icon-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="icon-box text-center">
+                            <span class="icon-box-icon">
+                                <i class="icon-truck"></i>
+                            </span>
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Payment & Delivery</h3>
+                                <p>Free shipping for orders over $50</p>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="icon-box text-center">
+                            <span class="icon-box-icon">
+                                <i class="icon-rotate-left"></i>
+                            </span>
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Return & Refund</h3>
+                                <p>Free 100% money back guarantee</p>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="icon-box text-center">
+                            <span class="icon-box-icon">
+                                <i class="icon-unlock"></i>
+                            </span>
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Secure Payment</h3>
+                                <p>100% secure payment</p>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="icon-box text-center">
+                            <span class="icon-box-icon">
+                                <i class="icon-headphones"></i>
+                            </span>
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Quality Support</h3>
+                                <p>Always online feedback 24/7</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <br><br><br>
         <div style="position: relative; width: 100%; height: 500px;">
              <div class="conta">
@@ -343,6 +465,6 @@
         
         
 
-
+</main>
 
 <%- include('../layouts/footer.ejs')  %>
