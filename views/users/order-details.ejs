@@ -4,124 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
-   <style>
-    body {
-    font-family: 'Times New Roman', Times, serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
-.order-container {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-
-.order-container h1 {
-    text-align: center;
-    color: #333;
-}
-
-.order-container h2 {
-    color: #555;
-    font-size: 1.2em;
-    margin-bottom: 20px;
-}
-
-.product-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-.product-item:last-child {
-    border-bottom: none;
-}
-
-.product-image {
-    width: 50px;
-    height: 50px;
-    
-    border-radius: 8px;
-    margin-right: 20px;
-}
-
-.product-details {
-    flex: 1;
-}
-
-.product-details h3 {
-    margin: 0;
-    color: #333;
-}
-
-.product-details p {
-    margin: 5px 0;
-    color: #666;
-}
-
-.return-button {
-    padding: 10px 15px;
-    background-color: green;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.return-button:hover {
-    background-color: #e60000;
-}
-
-.address-section {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-}
-
-.address-section h3 {
-    margin-top: 0;
-    color: #333;
-}
-
-.cancel-button {
-    display: block;
-    width: 30%;
-    padding: 10px 0;
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 20px 0;
-    transition: background-color 0.5s;
-}
-
-.cancel-button:hover {
-    background-color: #c82333;
-}
-
-.back-link {
-    display: block;
-    text-align: center;
-    padding: 10px 0;
-    color: #007bff;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.back-link:hover {
-    color: #0056b3;
-}
-
-   </style>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .order-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: 'Times New Roman', Times, serif;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        h2 {
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .product-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .product-im {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+           
+            margin-right: 20px;
+        }
+        .product-details {
+            flex-grow: 1;
+        }
+        .product-details h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .product-details p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .return-button, .cancel-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #fff;
+            margin-top: 10px;
+        }
+        .return-button {
+            background-color: #007bff;
+        }
+        .cancel-button {
+            background-color: #dc3545;
+        }
+        .address-section {
+            margin-top: 20px;
+        }
+        .address-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .address-section p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <% var loggedin = true; %> <!-- You can set it to true or false based on your logic -->
@@ -131,12 +103,14 @@
 <body>
 
     <div class="order-container">
-        <h1>Order Details</h1>
-        <h2>Order ID: <%= order._id %></h2>
+        <h1>Order Details</h1><br>
+
+       
         <h2>Payment Mode: <%= order.paymentMethod %></h2>
+        <br>
         <% order.products.forEach(product => { %>
             <div class="product-item">
-                <img src="<%= product.product.pictures[0] %>" alt="<%= product.product.name %>" class="product-image">
+                <img src="<%= product.product.pictures[0] %>" alt="<%= product.product.name %>" class="product-im">
                 <div class="product-details">
                     <h3><%= product.product.name %></h3>
                     <p>Quantity: <%= product.quantity %></p>
