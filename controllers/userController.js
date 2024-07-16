@@ -522,20 +522,6 @@ const loadEditProfile = async (req, res) => {
 };
 
 
-// const updateProfile = async (req, res) => {
-//     try {
-//         const { name, email, contact } = req.body;
-//         const userId = req.session.user_id;
-
-//         await User.findByIdAndUpdate(userId, { name, email, contact });
-
-//         res.redirect('/userProfile'); // Redirect to the profile page after updating
-//     } catch (error) {
-//         console.error('Error updating profile:', error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// };
-
 
 const loadChangePasswordForm = async (req, res) => {
     try {

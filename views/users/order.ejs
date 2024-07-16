@@ -8,54 +8,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .table-container {
+            width: 100%;
+            max-width: 800px;
+            overflow-x: auto;
+        }
         table {
-            width: 70%;
+            width: 100%;
             border-collapse: collapse;
-            margin-left: 25%;
-            font-size: small;
-           margin-bottom: 80px;
-            font-family: 'Times New Roman', Times, serif;
-            color: black;
+            margin-bottom: 20px;
         }
         th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
+            padding: 10px;
+            border: 1px solid #ddd;
             text-align: left;
         }
         th {
             background-color: #f2f2f2;
         }
-        h1 {
-            margin: 30px;
-            margin-left: 55%;
-            font-family: 'Times New Roman', Times, serif;
+        img {
+            max-width: 50px;
         }
-        .pagination {
-            margin-top: 20px;
-            text-align: center;
-            margin-left: 50%;
-        }
-
-        .page-btn {
-            display: inline-block;
-            padding: 8px 16px;
-            text-decoration: none;
-            background-color: #f2f2f2;
-            color: #333;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin: 0 4px;
-            cursor: pointer;
-        }
-
-        .page-btn:hover {
-            background-color: #ddd;
-        }
-
-        .page-btn.active {
+        button, .page-btn {
             background-color: #007bff;
             color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            text-decoration: none;
+            margin: 2px;
+        }
+        button:hover, .page-btn:hover {
+            background-color: #0056b3;
+        }
+        button[type="submit"] {
+            background-color: #28a745;
+        }
+        button[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination .active {
+            background-color: #0056b3;
+        }
+        @media (max-width: 600px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            th {
+                display: none;
+            }
+            tr {
+                margin-bottom: 10px;
+            }
+            td {
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 10px;
+                font-weight: bold;
+                text-align: left;
+            }
         }
     </style>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -129,76 +175,73 @@
     </script>
 </head>
 <body>
-    <h1>My Orders</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>S.No.</th>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Order Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% let serialNumber = 1; %>
-            <% orders.forEach(order => { %>
-                <% order.products.forEach(product => { %>
-                    <tr id="order-row-<%= order._id %>">
-                        <td><%= serialNumber %></td>
-                        <td>
-                            <% if (product.product && product.product.pictures && product.product.pictures.length > 0) { %>
-                                <img src="<%= product.product.pictures[0] %>" alt="<%= product.product.name %>" style="max-width: 50px;">
-                            <% } else { %>
-                                <img src="/placeholder.jpg" alt="Placeholder" style="max-width: 50px;">
-                            <% } %>
-                        </td>
-                        <td><%= product.product ? product.product.name : 'Product Not Found' %></td>
-                        <td>$<%= (order.finalPrice !== order.totalPrice ? order.finalPrice : order.totalPrice) %></td>
-                        <td><%= product.quantity %></td>
-                        <td id="order-status-<%= order._id %>"><%= order.status %></td>
-                        <td>
-                            <% if (order.status === 'pending') { %>
-                                <button id="pay-now-button-<%= order._id %>"
-                                        onclick="initiateRazorpayPayment('<%= order._id %>', '<%= order.finalPrice !== order.totalPrice ? order.finalPrice : order.totalPrice %>')"
-                                        style="background-color: #007bff; color: #fff; border: none; padding: 8px 16px; cursor: pointer; border-radius: 4px;">
-                                    Pay Now
-                                </button>
-                                <br><br>
-                            <% } %>
-                            <form action="/order-details" method="POST"> <!-- Form to submit order details -->
-                                <input type="hidden" name="orderId" value="<%= order._id %>">
-                                <button type="submit" style="background-color: #28a745; color: #fff; border: none; padding: 8px 16px; cursor: pointer; border-radius: 4px;">
-                                    Details
-                                </button> <!-- Button to view order details -->
-                            </form>
-                            <a href="/download-invoice/<%= order._id %>" target="_blank">
-                                <i class="fas fa-download" style="color: red;"></i>
-                            </a>
-                        </td>
+    <div class="main-content">
+        <br><br><br>
+        <h1>My Orders</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Order Status</th>
+                        <th>Action</th>
                     </tr>
-                    <% serialNumber++; %>
-                <% }); %>
-            <% }); %>
-        </tbody>
-        
-    </table>
-    <div class="pagination">
-        <% if (currentPage > 1) { %>
-            <a href="?page=<%= currentPage - 1 %>" class="page-btn">Previous</a>
-        <% } %>
-
-        <% for (let i = 1; i <= totalPages; i++) { %>
-            <a href="?page=<%= i %>" class="page-btn <%= i === currentPage ? 'active' : '' %>"><%= i %></a>
-        <% } %>
-        <% if (currentPage < totalPages) { %>
-            <a href="?page=<%= currentPage + 1 %>" class="page-btn">Next</a>
-        <% } %>
+                </thead>
+                <tbody>
+                    <% let serialNumber = 1; %>
+                    <% orders.forEach(order => { %>
+                        <% order.products.forEach(product => { %>
+                            <tr id="order-row-<%= order._id %>">
+                                <td data-label="S.No."><%= serialNumber %></td>
+                                <td data-label="Image">
+                                    <% if (product.product && product.product.pictures && product.product.pictures.length > 0) { %>
+                                        <img src="<%= product.product.pictures[0] %>" alt="<%= product.product.name %>">
+                                    <% } else { %>
+                                        <img src="/placeholder.jpg" alt="Placeholder">
+                                    <% } %>
+                                </td>
+                                <td data-label="Product Name"><%= product.product ? product.product.name : 'Product Not Found' %></td>
+                                <td data-label="Price">$<%= (order.finalPrice !== order.totalPrice ? order.finalPrice : order.totalPrice) %></td>
+                                <td data-label="Quantity"><%= product.quantity %></td>
+                                <td data-label="Order Status" id="order-status-<%= order._id %>"><%= order.status %></td>
+                                <td data-label="Action">
+                                    <% if (order.status === 'pending') { %>
+                                        <button id="pay-now-button-<%= order._id %>"
+                                                onclick="initiateRazorpayPayment('<%= order._id %>', '<%= order.finalPrice !== order.totalPrice ? order.finalPrice : order.totalPrice %>')">
+                                            Pay Now
+                                        </button>
+                                        <br><br>
+                                    <% } %>
+                                    <form action="/order-details" method="POST">
+                                        <input type="hidden" name="orderId" value="<%= order._id %>">
+                                        <button type="submit">Details</button>
+                                    </form>
+                                    <a href="/download-invoice/<%= order._id %>" target="_blank">
+                                        <i class="fas fa-download" style="color: red;"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <% serialNumber++; %>
+                        <% }); %>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination">
+            <% if (currentPage > 1) { %>
+                <a href="?page=<%= currentPage - 1 %>" class="page-btn">Previous</a>
+            <% } %>
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <a href="?page=<%= i %>" class="page-btn <%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+            <% } %>
+            <% if (currentPage < totalPages) { %>
+                <a href="?page=<%= currentPage + 1 %>" class="page-btn">Next</a>
+            <% } %>
+        </div>
     </div>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-   
 </body>
 </html>

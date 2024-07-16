@@ -1,470 +1,462 @@
+
+
 <% var loggedin = true; %> <!-- You can set it to true or false based on your logic -->
 <%- include('../layouts/user-header.ejs', { loggedin: loggedin }) %>
 
-
-
-</head>
-<main class="main">
-    <div style="position: relative; background-color: white; width: 100%; height: 630px; display: flex; justify-content: space-between;">
-        <div class="text-container">
-            <h1 class="glow-text">
-                <span class="glow">Glow</span>
-                <span class="spot">Spot</span>
-            </h1>
-        </div>
-        <img src="images/main bg.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">
-    </div>
-      <br><br>
-<br>
 <style>
-    /* CSS styles for the banner overlay */
-.banner-overlay {
-    position: absolute;
-    top: 40px; /* Adjust the distance from the top border */
-    left: 40px; /* Adjust the distance from the left border */
-    right: 40px; /* Adjust the distance from the right border */
-    bottom: 40px; /* Adjust the distance from the bottom border */
-    box-sizing: border-box; /* Ensure border width is included in the element's dimensions */
-    background-color: rgba(210, 205, 223, 0.5); /* Transparent background color */
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.5s ease-in-out; /* Add transition effect for smooth animation */
-}
-.banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease-in-out;
-            border-radius: 8px;
-        }
-/* Apply styles on hover */
-.banner:hover .banner-overlay {
-    opacity: 1; /* Show the overlay on hover */
+    .product {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.text-container {
-    position: absolute;
-    top: 60px; /* Adjust as needed */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    z-index: 1; /* Ensure the text is above the image */
+.product:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.glow-text {
-    font-size: 10rem;
-    color: rgb(27, 27, 27);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 170px;
-    font-family: 'Times New Roman', Times, serif;
+.product .product-link {
+    display: block;
+    position: relative;
 }
 
-.glow, .spot {
+.product .product-media {
+    position: relative;
+    overflow: hidden;
+}
+
+.product .product-media img {
+    transition: transform 0.5s ease;
+}
+
+.product .product-media:hover img {
+    transform: scale(1.1);
+}
+
+.product .product-action {
+    margin-top: 10px;
+}
+
+.btn-product-icon {
+    transition: background-color 0.3s ease;
+}
+
+.btn-product-icon:hover {
+    background-color: #fcb800; /* Example color */
+}
+
+/* AOS animations */
+[data-aos="fade-up"] {
     opacity: 0;
+    transform: translateY(20px);
+    transition-property: opacity, transform;
 }
 
-.glow {
-    animation: slideInFromLeft 4s forwards, lightningEffect 1s 3s forwards;
-    margin-right: 20px; /* Add gap between Glow and Spot */
+[data-aos="fade-up"].aos-animate {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.spot {
-    animation: slideInFromRight 4s forwards, lightningEffect 1s 3s forwards;
-    margin-left: 20px; /* Add gap between Glow and Spot */
+[data-aos="zoom-in"] {
+    opacity: 0;
+    transform: scale(0.9);
+    transition-property: opacity, transform;
 }
 
-@keyframes slideInFromLeft {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+[data-aos="zoom-in"].aos-animate {
+    opacity: 1;
+    transform: scale(1);
+}
+.banner {
+    overflow: hidden; /* Ensures that the content doesn't overflow out of the container */
+    position: relative; /* Required for the overlay effect */
 }
 
-@keyframes slideInFromRight {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+.banner img {
+    transition: transform 0.3s ease; /* Smooth transition for the zoom effect */
+    width: 100%;
+    height: auto;
 }
 
-@keyframes lightningEffect {
-    0% {
-        text-shadow: none;
-    }
-    25% {
-        text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff, 0 0 50px #fff, 0 0 60px #fff, 0 0 70px #fff, 0 0 80px #fff;
-    }
-    50% {
-        text-shadow: none;
-    }
-    75% {
-        text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff, 0 0 50px #fff, 0 0 60px #fff, 0 0 70px #fff, 0 0 80px #fff;
-    }
-    100% {
-        text-shadow: none;
-    }
+.banner:hover img {
+    transform: scale(1.1); /* Scale up the image slightly on hover */
+}
+
+.banner-content {
+    transition: opacity 0.3s ease; /* Smooth transition for the fade effect */
+}
+
+.banner:hover .banner-content {
+    opacity: 1; /* Make the content fully opaque on hover */
 }
 
 
-.conta {
-            position: relative;
-          
-            width: 100%;
-            height: 500px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 120px; /* Space between the cards */
-        }
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.6s ease-in-out, box-shadow 0.6s ease-in-out;
-        }
-        .card:hover {
-            transform: scale(1.2) rotate(6deg);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
-        }
-        .text-card {
-            width: 30%; /* Bigger card */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-family: 'Times New Roman', Times, serif;
-        }
-        .image-card {
-            width: 40%; /* Smaller card */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-        .image-card img {
-            max-width: 100%;
-            border-radius: 8px;
-            height: 100%;
-        }
-        .icon-section {
-            background-color: #fff;
-            padding: 40px 0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .icon-box {
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            padding: 20px;
-            color: #333;
-            margin: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .icon-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .icon-box-icon {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: #ff5722; /* Change icon color here */
-        }
-
-        .icon-box-title {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .icon-box-content p {
-            font-size: 1rem;
-            margin: 0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .col-lg-3, .col-sm-6 {
-            flex: 1 0 21%; /* Adjust the flex-basis to ensure proper spacing */
-            max-width: 25%;
-            box-sizing: border-box;
-            padding: 10px;
-        }
-
-        @media (max-width: 992px) {
-            .col-lg-3 {
-                max-width: 50%;
-                flex: 1 0 46%; /* Adjust for better spacing */
-            }
-        }
-
-        @media (max-width: 576px) {
-            .col-sm-6 {
-                max-width: 100%;
-                flex: 1 0 90%; /* Adjust for better spacing */
-            }
-        }
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+<body>
+    <div class="page-wrapper">
+       
 
+        <main class="main">
+            <div class="intro-section bg-lighter pt-5 pb-6">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="intro-slider-container slider-container-ratio slider-container-1 mb-2 mb-lg-0">
+                                <div class="intro-slider intro-slider-1 owl-carousel owl-simple owl-light owl-nav-inside" data-toggle="owl" data-owl-options='{
+                                        "nav": false, 
+                                        "responsive": {
+                                            "768": {
+                                                "nav": true
+                                            }
+                                        }
+                                    }'>
+                                    <div class="intro-slide">
+                                        <figure class="slide-image">
+                                            <picture>
+                                                <source media="(max-width: 480px)" srcset="assets/images/slider/slide-1-480w.jpg">
+                                                <img src="product_images/banner2.jpg" alt="Image Desc">
+                                            </picture>
+                                        </figure><!-- End .slide-image -->
+                                       
+                                        <div class="intro-content">
+                                            <h3 class="intro-subtitle">Bright your Days</h3><!-- End .h3 intro-subtitle -->
+                                            <h1 class="intro-title">New Arrivals</h1><!-- End .intro-title -->
 
+                                            <a href="/category" class="btn btn-outline-white">
+                                                <span>SHOP NOW</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </a>
+                                        </div><!-- End .intro-content -->
+                                       
+                                    </div><!-- End .intro-slide -->
 
-<div class="container">
-    <div class="banner-group">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="banner banner-border">
-                    <a href="#">
-                        <!-- Set the image's width and height to 100% of the parent container -->
-                        <img src="product_images/home4.png" alt="banner" style="width: 100%; height: 810px;">
-                
-                        <div class="banner-overlay"></div> <!-- Overlay color layer -->
-                    </a>
-                
-                    <div class="banner-content">
-                        <h4 class="banner-subtitle" ><a href="#" style="font-family: 'Times New Roman', Times, serif;">Trending now</a></h4><!-- End .banner-subtitle -->
-                        <h3 class="banner-title"><a href="#"><span style="font-family: 'Times New Roman', Times, serif;">This Week's<br>Most Wanted</span></a></h3><!-- End .banner-title -->
-                        <a href="/category" class="btn btn-outline-primary-2 banner-link" style="font-family: 'Times New Roman', Times, serif;">Discover Now<i class="icon-long-arrow-right"></i></a>
-                    </div><!-- End .banner-content -->
-                </div><!-- End .banner -->
-                
-            </div><!-- End .col-md-6-->
+                                    <div class="intro-slide">
+                                        <figure class="slide-image">
+                                            <picture>
+                                                <source media="(max-width: 480px)" srcset="assets/images/slider/slide-2-480w.jpg">
+                                                <img src="product_images/banner3.jpg" alt="Image Desc">
+                                            </picture>
+                                        </figure><!-- End .slide-image -->
 
-            <div class="col-md-6">
-                <div class="banner banner-border-hover">
-                    <a href="#">
-                        <img src="product_images/ban1.jpg" alt="Banner">
-                        <div class="banner-overlay"></div> <!-- Overlay color layer -->
-                    </a>
+                                        <div class="intro-content">
+                                            <h3 class="intro-subtitle">News and Inspiration</h3><!-- End .h3 intro-subtitle -->
+                                            <h1 class="intro-title">New Arrivals</h1><!-- End .intro-title -->
 
-                    <div class="banner-content">
-                        <h4 class="banner-subtitle"><a href="#">Limited time only.</a></h4><!-- End .banner-subtitle -->
-                        <h3 class="banner-title"><a href="#"><span style="font-family: 'Times New Roman', Times, serif;">Illuminate<br>Your Home</span></a></h3><!-- End .banner-title -->
-                        <a href="/category" class="btn btn-outline-primary-2 banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
-                    </div><!-- End .banner-content -->
-                </div><!-- End .banner -->
+                                            <a href="/category" class="btn btn-outline-white">
+                                                <span>SHOP NOW</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </a>
+                                        </div><!-- End .intro-content -->
+                                    </div><!-- End .intro-slide -->
 
-                <div class="banner banner-border-hover">
-                    <a href="#">
-                        <img src="product_images/ban2.jpg" alt="Banner">
-                        <div class="banner-overlay"></div> <!-- Overlay color layer -->
-                    </a>
+                                    <div class="intro-slide">
+                                        <figure class="slide-image">
+                                            <picture>
+                                                <source media="(max-width: 480px)" srcset="assets/images/slider/slide-3-480w.jpg">
+                                                <img src="product_images/bannner4.jpg" alt="Image Desc">
+                                            </picture>
+                                        </figure><!-- End .slide-image -->
 
-                    <div class="banner-content">
-                        <h3 class="banner-title"><a href="#" style="font-family: 'Times New Roman', Times, serif;" ><span>Decorate  <br>Your Home</span></a></h3><!-- End .banner-title -->
-                        <a href="/category" class="btn btn-outline-primary-2 banner-link">Discover Now<i class="icon-long-arrow-right"></i></a>
-                    </div><!-- End .banner-content -->
-                </div><!-- End .banner -->
-            </div><!-- End .col-md-6 -->
-        </div><!-- End .row -->
-    </div><!-- End .banner-group -->
-</div><!-- End .container -->
+                                        <div class="intro-content">
+                                          
+                                            <a href="/category" class="btn btn-outline-white">
+                                                <span>SHOP NOW</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </a>
+                                        </div><!-- End .intro-content -->
+                                    </div><!-- End .intro-slide -->
+                                </div><!-- End .intro-slider owl-carousel owl-simple -->
+                                
+                                <span class="slider-loader"></span><!-- End .slider-loader -->
+                            </div><!-- End .intro-slider-container -->
+                        </div><!-- End .col-lg-8 -->
+                        <div class="col-lg-4">
+                            <div class="intro-banners">
+                                <div class="row row-sm">
+                                    <div class="col-md-6 col-lg-12">
+                                        <div class="banner banner-display">
+                                            <a href="#">
+                                                <img src="product_images/banner5.jpg" alt="Banner">
+                                            </a>
 
-            <div class="owl-carousel owl-simple" data-toggle="owl" 
-                data-owl-options='{
-                    "nav": false, 
-                    "dots": false,
-                    "margin": 30,
-                    "loop": false,
-                    "responsive": {
-                        "0": {
-                            "items":2
-                        },
-                        "420": {
-                            "items":3
-                        },
-                        "600": {
-                            "items":4
-                        },
-                        "900": {
-                            "items":5
-                        },
-                        "1024": {
-                            "items":6
-                        }
-                    }
-                }'>
-                
-            </div><!-- End .owl-carousel -->
-        </div><!-- End .container -->
-    </div><!-- End .bg-lighter -->
-    <div class="mb-6"></div><!-- End .mb-6 -->
+                                            <div class="banner-content">
+                                              <a href="/category" class="btn btn-outline-white banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                                            </div><!-- End .banner-content -->
+                                        </div><!-- End .banner -->
+                                    </div><!-- End .col-md-6 col-lg-12 -->
 
+                                    <div class="col-md-6 col-lg-12">
+                                        <div class="banner banner-display mb-0">
+                                            <a href="#">
+                                                <img src="product_images/banner6.jpg" alt="Banner">
+                                            </a>
+                                          
+                                            <div class="banner-content">
+                                                <br><br><br><br><br><br>
+                                              <a href="/category" class="btn btn-outline-white banner-link">Discover Now<i class="icon-long-arrow-right"></i></a>
+                                            </div><!-- End .banner-content -->
+                                        </div><!-- End .banner -->
+                                    </div><!-- End .col-md-6 col-lg-12 -->
+                                </div><!-- End .row row-sm -->
+                            </div><!-- End .intro-banners -->
+                        </div><!-- End .col-lg-4 -->
+                    </div><!-- End .row -->
 
+                    <div class="mb-6"></div><!-- End .mb-6 -->
 
-
-
-
-    <div class="container">
-        <div class="heading heading-center mb-3">
-            <h2 class="title-lg" style="font-family: 'Times New Roman', Times, serif;">Trendy Products</h2><!-- End .title -->
-
-           
-        </div><!-- End .heading -->
-
-        <div class="tab-content tab-content-carousel">
-            <div class="tab-pane p-0 fade show active" id="trendy-all-tab" role="tabpanel" aria-labelledby="trendy-all-link">
-                <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                    data-owl-options='{
-                        "nav": false, 
-                        "dots": true,
-                        "margin": 20,
-                        "loop": false,
-                        "responsive": {
-                            "0": {
-                                "items":2
-                            },
-                            "480": {
-                                "items":2
-                            },
-                            "768": {
-                                "items":3
-                            },
-                            "992": {
-                                "items":4
-                            },
-                            "1200": {
-                                "items":4,
-                                "nav": true,
-                                "dots": false
+                    <div class="owl-carousel owl-simple" data-toggle="owl" 
+                        data-owl-options='{
+                            "nav": false, 
+                            "dots": false,
+                            "margin": 30,
+                            "loop": false,
+                            "responsive": {
+                                "0": {
+                                    "items":2
+                                },
+                                "420": {
+                                    "items":3
+                                },
+                                "600": {
+                                    "items":4
+                                },
+                                "900": {
+                                    "items":5
+                                },
+                                "1024": {
+                                    "items":6
+                                }
                             }
-                        }
-                    }'>
-                    <% const shuffledProducts = products.sort(() => 0.5 - Math.random()).slice(0, 8); %>
-                    <% shuffledProducts.forEach(product => { %>
-                        <div class="product product-11 text-center">
-                            <a href="/product/<%= product._id %>" class="product-link">
-                                <figure class="product-media">
-                                    <% if (product.pictures && product.pictures.length > 0) { %>
-                                        <% product.pictures.slice(0, 1).forEach(image => { %>
-                                            <img src="<%= image %>" alt="Product image" class="product-image">
-                                        <% }) %>
-                                    <% } else { %>
-                                        <!-- Default image or placeholder -->
-                                        <img src="default-image.jpg" alt="Default Product Image" class="product-image">
-                                    <% } %>
-                                    
-                                    <div class="product-action-vertical">
-                                        <a href="#" class="btn-product-icon btn-wishlist"><span>add to wishlist</span></a>
-                                    </div><!-- End .product-action-vertical -->
-                                </figure>
-                                <!-- Additional product body content -->
-                                <div class="product-body">
-                                    <h3 class="product-title"><%= product.name %></h3><!-- End .product-title -->
-                                    <div class="product-price">
-                                        <%= product.price %>
-                                    </div><!-- End .product-price -->
-                                    <p class="product-category"> <%= product.category.name %></p><!-- Display the category name -->
-                                </div><!-- End .product-body -->
-                            </a>
-                            <div class="product-action">
-                                <a href="/cart" class="btn-product btn-cart"><span>add to cart</span></a>
-                            </div><!-- End .product-action -->
-                        </div><!-- End .product -->
-                    <% }) %>
-                    
+                        }'>
+                        <a href="#" class="brand">
+                            <img src="assets/images/brands/1.png" alt="Brand Name">
+                        </a>
 
-                </div><!-- End .owl-carousel -->
-            </div><!-- .End .tab-pane -->
-            <!-- Repeat the above structure for other tabs if needed -->
-        </div><!-- End .tab-content -->
-        <div class="icon-section">
+                        <a href="#" class="brand">
+                            <img src="assets/images/brands/2.png" alt="Brand Name">
+                        </a>
+
+                        <a href="#" class="brand">
+                            <img src="assets/images/brands/3.png" alt="Brand Name">
+                        </a>
+
+                        <a href="#" class="brand">
+                            <img src="assets/images/brands/4.png" alt="Brand Name">
+                        </a>
+
+                        <a href="#" class="brand">
+                            <img src="assets/images/brands/5.png" alt="Brand Name">
+                        </a>
+
+                        <a href="#" class="brand">
+                            <img src="assets/images/brands/6.png" alt="Brand Name">
+                        </a>
+                    </div><!-- End .owl-carousel -->
+                </div><!-- End .container -->
+            </div><!-- End .bg-lighter -->
+
+            <div class="mb-6"></div><!-- End .mb-6 -->
+
             <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="icon-box text-center">
-                            <span class="icon-box-icon">
-                                <i class="icon-truck"></i>
-                            </span>
-                            <div class="icon-box-content">
-                                <h3 class="icon-box-title">Payment & Delivery</h3>
-                                <p>Free shipping for orders over $50</p>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="icon-box text-center">
-                            <span class="icon-box-icon">
-                                <i class="icon-rotate-left"></i>
-                            </span>
-                            <div class="icon-box-content">
-                                <h3 class="icon-box-title">Return & Refund</h3>
-                                <p>Free 100% money back guarantee</p>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="icon-box text-center">
-                            <span class="icon-box-icon">
-                                <i class="icon-unlock"></i>
-                            </span>
-                            <div class="icon-box-content">
-                                <h3 class="icon-box-title">Secure Payment</h3>
-                                <p>100% secure payment</p>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="icon-box text-center">
-                            <span class="icon-box-icon">
-                                <i class="icon-headphones"></i>
-                            </span>
-                            <div class="icon-box-content">
-                                <h3 class="icon-box-title">Quality Support</h3>
-                                <p>Always online feedback 24/7</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br><br><br>
-        <div style="position: relative; width: 100%; height: 500px;">
-             <div class="conta">
-        <div class="card text-card">
-            <h2 style="font-family: 'Times New Roman', Times, serif;">WE ARE BRIGHT</h2>
-        <p style="font-family: 'Times New Roman', Times, serif;">At Glow Spot, we believe that lighting is more than just illumination; it's an art form that transforms spaces and elevates moods. Our meticulously crafted lighting solutions are designed to inspire and enhance every room they touch. Whether you’re looking to create a cozy ambiance in your living room or a vibrant atmosphere in your office, Glow Spot offers a diverse range of products that combine elegance with innovation.</p>   
-        </div>
-        <div class="card image-card">
-            <img src="images/home text.png" alt="Glow Spot Image">
-        </div>
-    </div>
-            </div>
-        
-        
-        
-        
+                <div class="heading heading-center mb-3">
+                    <h2 class="title-lg" style="font-family: 'Times New Roman', Times, serif;">Trendy Products</h2><!-- End .title -->
+                </div><!-- End .heading -->
+            
+                <div class="tab-content tab-content-carousel">
+                    <div class="tab-pane p-0 fade show active" id="trendy-all-tab" role="tabpanel" aria-labelledby="trendy-all-link">
+                        <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                            data-owl-options='{
+                                "nav": false, 
+                                "dots": true,
+                                "margin": 20,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {
+                                        "items":2
+                                    },
+                                    "480": {
+                                        "items":2
+                                    },
+                                    "768": {
+                                        "items":3
+                                    },
+                                    "992": {
+                                        "items":4
+                                    },
+                                    "1200": {
+                                        "items":4,
+                                        "nav": true,
+                                        "dots": false
+                                    }
+                                }
+                            }' data-aos="fade-up">
+                            <% const shuffledProducts = products.sort(() => 0.5 - Math.random()).slice(0, 8); %>
+                            <% shuffledProducts.forEach(product => { %>
+                                <div class="product product-11 text-center" data-aos="zoom-in">
+                                    <a href="/product/<%= product._id %>" class="product-link">
+                                        <figure class="product-media">
+                                            <% if (product.pictures && product.pictures.length > 0) { %>
+                                                <% product.pictures.slice(0, 1).forEach(image => { %>
+                                                    <img src="<%= image %>" alt="Product image" class="product-image">
+                                                <% }) %>
+                                            <% } else { %>
+                                                <!-- Default image or placeholder -->
+                                                <img src="default-image.jpg" alt="Default Product Image" class="product-image">
+                                            <% } %>
+                                            
+                                            <div class="product-action-vertical">
+                                               
+                                            </div><!-- End .product-action-vertical -->
+                                        </figure>
+                                        <!-- Additional product body content -->
+                                        <div class="product-body">
+                                            <h3 class="product-title"><%= product.name %></h3><!-- End .product-title -->
+                                            <div class="product-price">
+                                                <%= product.price %>
+                                            </div><!-- End .product-price -->
+                                            <p class="product-category"> <%= product.category.name %></p><!-- Display the category name -->
+                                        </div><!-- End .product-body -->
+                                    </a>
+                                    <div class="product-action">
+                                        <a href="/cart" class="btn-product btn-cart"><span>add to cart</span></a>
+                                    </div><!-- End .product-action -->
+                                </div><!-- End .product -->
+                            <% }) %>
+                        </div><!-- End .owl-carousel -->
+                    </div><!-- .End .tab-pane -->
+                    <!-- Repeat the above structure for other tabs if needed -->
+                </div><!-- End .tab-content -->
+            </div><!-- End .container -->
+            
 
-</main>
+    		<div class="container categories pt-6">
+        		<h2 class="title-lg text-center mb-4">Shop by Categories</h2><!-- End .title-lg text-center -->
 
-<%- include('../layouts/footer.ejs')  %>
+        		<div class="row">
+        			<div class="col-6 col-lg-4">
+        				<div class="banner banner-display banner-link-anim">
+                			<a href="#">
+                				<img src="product_images/Shell Pendant.jpg" alt="Banner">
+                			</a>
+
+                			<div class="banner-content banner-content-center">
+                				<h3 class="banner-title text-black" style="font-family: 'Times New Roman', Times, serif;"><a href="#">Pendant Lights</a></h3><!-- End .banner-title -->
+                				<a href="/category" class="btn btn-outline-white banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                			</div><!-- End .banner-content -->
+            			</div><!-- End .banner -->
+        			</div><!-- End .col-sm-6 col-lg-3 -->
+        			<div class="col-6 col-lg-4 order-lg-last">
+        				<div class="banner banner-display banner-link-anim">
+                			<a href="">
+                				<img src="product_images/floor.jpg" alt="Banner">
+                			</a>
+
+                			<div class="banner-content banner-content-center">
+                				<h3 class="banner-title text-black"><a href="#">Floor Lamps</a></h3><!-- End .banner-title -->
+                				<a href="/category" class="btn btn-outline-white banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                			</div><!-- End .banner-content -->
+            			</div><!-- End .banner -->
+        			</div><!-- End .col-sm-6 col-lg-3 -->
+        			<div class="col-sm-12 col-lg-4 banners-sm">
+                        <div class="row">
+            				<div class="banner banner-display banner-link-anim col-lg-12 col-6">
+                    			<a href="#">
+                    				<img src="product_images/wall.jpg" alt="Banner">
+                    			</a>
+
+                    			<div class="banner-content banner-content-center">
+                    				<h3 class="banner-title text-black"><a href="#">Wall Lights</a></h3><!-- End .banner-title -->
+                    				<a href="/category" class="btn btn-outline-white banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                    			</div><!-- End .banner-content -->
+                			</div><!-- End .banner -->
+
+                			<div class="banner banner-display banner-link-anim col-lg-12 col-6">
+                    			<a href="#">
+                    				<img src="product_images/chandelier.jpg" alt="Banner">
+                    			</a>
+
+                    			<div class="banner-content banner-content-center">
+                    				<h3 class="banner-title text-black"><a href="#">Chandelier Lights</a></h3><!-- End .banner-title -->
+                    				<a href="/categor" class="btn btn-outline-white banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                    			</div><!-- End .banner-content -->
+                			</div><!-- End .banner -->
+                        </div>
+        			</div><!-- End .col-sm-6 col-lg-3 -->
+        		</div><!-- End .row -->
+    		</div><!-- End .container -->
+            <div class="container categories pt-6">
+        		<h2 class="title-lg text-center mb-4"></h2><!-- End .title-lg text-center -->
+
+        		<div class="row">
+        			<div class="col-6 col-lg-4">
+        				<div class="banner banner-display banner-link-anim">
+                			<a href="#">
+                				<img src="product_images/outdoor.jpg" alt="Banner">
+                			</a>
+
+                			<div class="banner-content banner-content-center">
+                				<h3 class="banner-title text-black" style="font-family: 'Times New Roman', Times, serif;"><a href="#">Outdoor Lights</a></h3><!-- End .banner-title -->
+                				<a href="/category" class="btn btn-outline-white banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                			</div><!-- End .banner-content -->
+            			</div><!-- End .banner -->
+        			</div><!-- End .col-sm-6 col-lg-3 -->
+        			<div class="col-6 col-lg-4 order-lg-last">
+        				<div class="banner banner-display banner-link-anim">
+                			<a href="">
+                				<img src="product_images/ceiling.jpg" alt="Banner">
+                			</a>
+
+                			<div class="banner-content banner-content-center">
+                				<h3 class="banner-title text-black"><a href="#">Ceiling Lights</a></h3><!-- End .banner-title -->
+                				<a href="/category" class="btn btn-outline-white banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                			</div><!-- End .banner-content -->
+            			</div><!-- End .banner -->
+        			</div><!-- End .col-sm-6 col-lg-3 -->
+        			<div class="col-sm-12 col-lg-4 banners-sm">
+                        <div class="row">
+            				<div class="banner banner-display banner-link-anim col-lg-12 col-6">
+                    			<a href="#">
+                    				<img src="product_images/study.jpg" alt="Banner">
+                    			</a>
+
+                    			<div class="banner-content banner-content-center">
+                    				<h3 class="banner-title text-black"><a href="#">Study Lamp</a></h3><!-- End .banner-title -->
+                    				<a href="/category" class="btn btn-outline-white banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                    			</div><!-- End .banner-content -->
+                			</div><!-- End .banner -->
+
+                			<div class="banner banner-display banner-link-anim col-lg-12 col-6">
+                    			<a href="#">
+                    				<img src="product_images/table.jpg" alt="Banner">
+                    			</a>
+
+                    			<div class="banner-content banner-content-center">
+                    				<h3 class="banner-title text-black"><a href="#">Table Lamps</a></h3><!-- End .banner-title -->
+                    				<a href="/category" class="btn btn-outline-white banner-link">Shop Now<i class="icon-long-arrow-right"></i></a>
+                    			</div><!-- End .banner-content -->
+                			</div><!-- End .banner -->
+                        </div>
+        			</div><!-- End .col-sm-6 col-lg-3 -->
+        		</div><!-- End .row -->
+    		</div><!-- End .container -->
+            <div class="mb-5"></div><!-- End .mb-6 -->
+           
+
+            
+          
+                <div class="more-container text-center">
+                    <a href="/category" class="btn btn-outline-darker btn-more"><span>Load more products</span><i class="icon-long-arrow-down"></i></a>
+                </div><!-- End .more-container -->
+            </div><!-- End .container -->
+
+          
+         <%- include('../layouts/footer.ejs') %>
+    <!-- Mobile Menu -->
+  
+</body>
+
+
+<!-- molla/index-2.html  22 Nov 2019 09:55:42 GMT -->
+</html>

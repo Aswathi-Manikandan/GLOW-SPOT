@@ -12,7 +12,7 @@
             padding: 0;
         }
         .order-container {
-            max-width: 1000px;
+            max-width: 500px;
             margin: 30px auto;
             background-color: #ffffff;
             padding: 20px;
@@ -101,20 +101,20 @@
 
 <%- include('../layouts/user-sidebar.ejs') %>
 <body>
-
+<br><br><br>
     <div class="order-container">
-        <h1>Order Details</h1><br>
-
+        <h1 style="font-family: 'Times New Roman', Times, serif; color: black; font-weight: bold;">Order Details</h1><br>
+<br>
        
-        <h2>Payment Mode: <%= order.paymentMethod %></h2>
+        <h2 style="font-family: 'Times New Roman', Times, serif;">Payment Mode: <%= order.paymentMethod %></h2>
         <br>
         <% order.products.forEach(product => { %>
-            <div class="product-item">
+            <div class="product-item ">
                 <img src="<%= product.product.pictures[0] %>" alt="<%= product.product.name %>" class="product-im">
                 <div class="product-details">
-                    <h3><%= product.product.name %></h3>
-                    <p>Quantity: <%= product.quantity %></p>
-                    <p>Price: $<%= (product.price * product.quantity).toFixed(2) %></p>
+                    <h3 style="font-family: 'Times New Roman', Times, serif; color: black; font-weight: bold;" ><%= product.product.name %></h3>
+                    <p style="font-family: 'Times New Roman', Times, serif;">Quantity: <%= product.quantity %></p>
+                    <p style="font-family: 'Times New Roman', Times, serif;">Price: $<%= (product.price * product.quantity).toFixed(2) %></p>
                     <!-- Inside the forEach loop where return buttons are generated -->
                     <% if (order.status === 'delivered') { %>
                         <button class="return-button" data-order-id="<%= order._id %>" data-product-id="<%= product.product._id %>" data-quantity="<%= product.quantity %>">Return</button>
@@ -124,18 +124,18 @@
         <% }); %>
 
         <div class="address-section">
-            <h3>Shipping Address</h3>
+            <h3 style="font-family: 'Times New Roman', Times, serif; color: black; font-weight: bold;">Shipping Address</h3>
             <% order.addresses.forEach(address => { %>
-                <p><%= address.street %>, <%= address.city %>, <%= address.state %> <%= address.postalCode %>, <%= address.country %></p>
+                <p style="font-family: 'Times New Roman', Times, serif;"><%= address.street %>, <%= address.city %>, <%= address.state %> <%= address.postalCode %>, <%= address.country %></p>
             <% }); %>
         </div>
 
         <!-- Cancel Order Button -->
         <% if (order.status !== 'pending') { %>
-            <button id="cancelOrderButton" class="cancel-button">Cancel</button>
+            <button id="cancelOrderButton" class="cancel-button" style="font-family: 'Times New Roman', Times, serif;">Cancel</button>
         <% } %>
 
-        <a href="/order" class="back-link">Back to Orders</a>
+        <a href="/order" class="back-link" style="font-family: 'Times New Roman', Times, serif;">Back to Orders</a>
     </div>
 
     <!-- Include SweetAlert CDN -->

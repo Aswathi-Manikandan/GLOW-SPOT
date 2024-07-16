@@ -1,43 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
-<!-- molla/category.html  22 Nov 2019 10:02:48 GMT -->
 <head>
-    <style>
-        #dropdown-menu {
-    display: none; /* Initially hide the dropdown menu */
-}
-.body{
-    font-family: 'Times New Roman', Times, serif;
-}
-.dropdown:hover #dropdown-menu {
-    display: flex; /* Show the dropdown menu when the welcome username is hovered */
-}
-/* Cart count styles */
-.cart-count {
-    position: absolute;
-    top: -10px; /* Adjust the vertical position */
-    right: -10px; /* Adjust the horizontal position */
-    background-color: voilet; /* Change the background color */
-    color: #ffffff; /* Change the text color */
-    border-radius: 30%; /* Make it round */
-    padding: 5px 8px; /* Adjust padding */
-    font-size: 9px; /* Adjust font size */
-    -webkit-text-fill-color: #ffffff;
-}
-
-
-    </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Glow Spot</title>
-    
-    
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
     <!-- Favicon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
@@ -45,194 +16,213 @@
     <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
     <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
     <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
     <!-- Main CSS File -->
     <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="/assets/css/plugins/nouislider/nouislider.css">
+    <style>
+        #dropdown-menu {
+            display: none; /* Initially hide the dropdown menu */
+        }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            padding-top: 56px; /* Adjust this value if header height changes */
+        }
+        .dropdown:hover #dropdown-menu {
+            display: flex; /* Show the dropdown menu when the welcome username is hovered */
+        }
+        /* Cart count styles */
+        .cart-count {
+            position: absolute;
+            top: -15px; /* Adjust the vertical position */
+            right: -15px; /* Adjust the horizontal position */
+            background-color: rgb(211, 38, 38); /* Change the background color */
+            color: #ffffff; /* Change the text color */
+            border-radius: 50%; /* Make it round */
+            padding: 5px 8px; /* Adjust padding */
+            font-size: 6px; /* Adjust font size */
+            -webkit-text-fill-color: #ffffff;
+        }
+        .icon {
+            width: 30px;
+            height: 30px;
+        }
+        .icon-heart, .icon-cart {
+            fill: white;
+        }
+    </style>
 </head>
-
-<body>
-    <div class="page-wrapper">
-        <header class="header">
-            <div class="header-top">
-                <div class="container">
+    <body>
+    <header class="header fixed-top">
     
 
+        <div class="header-middle sticky-header">
+            <div class="container">
+                <div class="header-left">
+                    <button class="mobile-menu-toggler">
+                        <span class="sr-only"></span>
+                        <i class="icon-bars"></i>
+                    </button>
 
-                    <div class="header-right">
-                        <ul class="top-menu">
+                    <a href="" class="logo">
+                        <img src="/images/logo.jfif" alt="Molla Logo" width="105" height="25">
+                    </a>
+
+                    <nav class="main-nav">
+                        <ul class="menu sf-arrows">
                             <li>
-                                <a href="#">Links</a>
-                                <ul>
-                                    <li><a href="tel:#"><i class="icon-phone"></i>Call: +04936 98765</a></li>
-                                    <li><a href="/about">About</a></li>
-                                    <li><a href="/contact">Contact</a></li>
-                                    <% if (loggedin) { %>
-                                        <!-- When the user is logged in, display the welcome message with the username -->
-                                        <% if (user) { %>
-                                            <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i>Welcome, <%= user.name %><b class="caret"></b></a>
-                                                <!-- Dropdown menu with profile and logout options -->
-                                                <ul class="dropdown-menu" id="dropdown-menu">
-                                                    <li><a href="/userprofile">Profile</a></li>
-                                                    <li><a href="/logout">Logout</a></li>
-                                                </ul>
-                                            </li>
-                                        <% } else { %>
-                                            <!-- Handle case where user object is not available -->
-                                            <li><a href="/login"><i class="icon-user"></i>Login</a></li>
-                                        <% } %>
+                                <a href="/" class="sf-with-ul">Home</a>
+                            </li>
+                            <li>
+                                <a href="/category" class="sf-with-ul">Shop</a>
+                            </li>
+                        </ul><!-- End .menu -->
+                    </nav><!-- End .main-nav -->
+                </div><!-- End .header-left -->
+
+                <div class="header-right">
+                    <ul class="top-menu">
+                        <li>
+                            <a href="#">Links</a>
+                            <ul>
+                                <% if (loggedin) { %>
+                                    <% if (user) { %>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle"><i class="icon-user"></i>Welcome, <%= user.name %><b class="caret"></b></a>
+                                            <ul class="dropdown-menu" id="dropdown-menu">
+                                                <li><a href="/userprofile">Profile</a></li>
+                                                <li><a href="/logout">Logout</a></li>
+                                            </ul>
+                                        </li>
                                     <% } else { %>
-                                        <!-- Handle case where user is not logged in -->
                                         <li><a href="/login"><i class="icon-user"></i>Login</a></li>
                                     <% } %>
-                                    
-                                    
-                                  
-                                    
-                                    
-                                    
-                                </ul>
-                            </li>
-                        </ul><!-- End .top-menu -->
-                    </div><!-- End .header-right -->
+                                <% } else { %>
+                                    <li><a href="/login"><i class="icon-user"></i>Login</a></li>
+                                <% } %>   
+                            </ul>
+                        </li>
+                    </ul><!-- End .top-menu -->
                     
-                </div><!-- End .container -->
-            </div><!-- End .header-top -->
-
-            <div class="header-middle sticky-header">
-                <div class="container">
-                    <div class="header-left">
-                        <button class="mobile-menu-toggler">
-                            <span class="sr-only">Toggle mobile menu</span>
-                            <i class="icon-bars"></i>
-                        </button>
-
-                        <a href="index.html" class="logo">
-                            <img src="/images/logo.jfif" alt="Molla Logo" width="150" height="15">
+                    <div class="dropdown cart-dropdown">
+                        <a href="/wishlist" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <svg class="icon icon-heart" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6.42 3.42 5 5.5 5c1.74 0 3.41 1.01 4.5 2.09C11.09 6.01 12.76 5 14.5 5 16.58 5 18 6.42 18 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#000000"/>
+                            </svg>
+                            
+                            <span id="wishlist-count" class="cart-count">0</span> <!-- Wishlist count -->
                         </a>
+                    </div>
+                            
+                    <div class="dropdown cart-dropdown">
+                        <a href="/cart" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <svg class="icon icon-cart" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 20c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm7 0c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zM7.82 15l1.35-6.5h8.91L21 13.38V16h-2.42c-.58 0-1.05.37-1.23.88l-1.73 5.1c-.17.5-.64.88-1.23.88H8.82c-.59 0-1.06-.37-1.23-.88l-1.74-5.1A1.32 1.32 0 0 0 4.82 16H2v-2.62L4.57 4h14.65L20.9 9H7.7L7.82 15z" fill="#000000"/>
+                            </svg>
+                            
+                            <span id="cart-count" class="cart-count">0</span> <!-- Cart count -->
+                        </a>
+                    </div>
+                </div><!-- End .header-right -->
+            </div><!-- End .container -->
+        </div><!-- End .header-middle -->
+    </header><!-- End .header -->
+<div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
 
-                        <nav class="main-nav">
-                            <ul class="menu sf-arrows">
-                                <li class="megamenu-container active">
-                                    <a href="/">Home</a>
+<div class="mobile-menu-container">
+    <div class="mobile-menu-wrapper">
+        <span class="mobile-menu-close"><i class="icon-close"></i></span>
 
-                                   
-                                </li>
-                                <li>
-                                    <a href="/category" >Shop</a>
+       <br><br><br>
+        
+        <nav class="mobile-nav">
+            <ul class="mobile-menu">
+                <li class="active">
+                    <a href="/">Home</a>
 
-                                    
-                                </li>
+                   
+                </li>
+                <li>
+                    <a href="/category">Shop</a>
                     
-                               
-                                    </ul>
-                                </li>
-                               
-                               
-                            </ul><!-- End .menu -->
-                        </nav><!-- End .main-nav -->
-                    </div><!-- End .header-left -->
+                </li>
+               
+            </ul>
+        </nav><!-- End .mobile-nav -->
 
-                    <div class="header-right">
-                        <div class="header-search">
-                            <!-- <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
-                            <form action="#" method="get"> -->
-                                <div class="header-search-wrapper">
-                                    <label for="q" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search in..." required>
-                                </div><!-- End .header-search-wrapper -->
-                            </form>
-                        </div><!-- End .header-search -->
-                        
-                        <div class="dropdown cart-dropdown">
-                            <a href="/wishlist" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <i class="far fa-heart fa-xs"></i>
-                                <span id="wishlist-count" class="cart-count">0</span> <!-- Wishlist count -->
-                            </a>
-                        </div>
-                        
-                      <!-- Include a span element inside the cart icon for displaying the count -->
-<!-- Cart icon with count -->
-<div class="dropdown cart-dropdown">
-    <a href="/cart" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" data-display="static">
-        <i class="icon-shopping-cart"></i>
-        <span id="cart-count" class="cart-count">0</span> <!-- Cart count -->
-    </a>
-</div>
+       
+    </div><!-- End .mobile-menu-wrapper -->
+</div><!-- End .mobile-menu-container -->
 
 <script>
     // Function to fetch initial cart count
-function fetchInitialCartCount() {
-    fetch('/cart/count', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Failed to fetch cart count');
-        }
-    })
-    .then(data => {
-        updateCartCount(data.cartCount); // Update the cart count
-    })
-    .catch(error => {
-        console.error('Error fetching cart count:', error);
-        // Handle error as needed
-    });
-}
-
-// Function to update cart count in the frontend
-function updateCartCount(count) {
-    const cartCountElement = document.getElementById('cart-count');
-    if (cartCountElement) {
-        cartCountElement.textContent = count;
+    function fetchInitialCartCount() {
+        fetch('/cart/count', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch cart count');
+            }
+        })
+        .then(data => {
+            updateCartCount(data.cartCount); // Update the cart count
+        })
+        .catch(error => {
+            console.error('Error fetching cart count:', error);
+            // Handle error as needed
+        });
     }
-}
 
-// Function to add product to cart
-function addToCart(productId) {
-    fetch(`/cart/add-to-cart/${productId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
+    // Function to update cart count in the frontend
+    function updateCartCount(count) {
+        const cartCountElement = document.getElementById('cart-count');
+        if (cartCountElement) {
+            cartCountElement.textContent = count;
         }
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Failed to add product to cart');
-        }
-    })
-    .then(data => {
-        updateCartCount(data.cartCount); // Update the cart count
-        // Optionally, display a success message or perform other actions
-    })
-    .catch(error => {
-        console.error('Error adding to cart:', error);
-        // Handle error as needed
+    }
+
+    // Function to add product to cart
+    function addToCart(productId) {
+        fetch(`/cart/add-to-cart/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to add product to cart');
+            }
+        })
+        .then(data => {
+            updateCartCount(data.cartCount); // Update the cart count
+            // Optionally, display a success message or perform other actions
+        })
+        .catch(error => {
+            console.error('Error adding to cart:', error);
+            // Handle error as needed
+        });
+    }
+
+    // Fetch initial cart count when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchInitialCartCount();
     });
-}
 
-// Fetch initial cart count when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    fetchInitialCartCount();
-});
-
-</script>
-                        
-<script>
     // Function to fetch initial wishlist count
     function fetchInitialWishlistCount() {
         fetch('/wishlist/count', {
@@ -295,10 +285,6 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchInitialWishlistCount();
     });
 </script>
-                            
-                </div><!-- End .container -->
-            </div><!-- End .header-middle -->
-        </header><!-- End .header -->
 
-
-      
+</body>
+</html>

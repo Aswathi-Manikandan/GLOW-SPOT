@@ -1,79 +1,87 @@
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User Profile Dashboard</title>
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<!-- Font Awesome CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<style>
+<main class="main">
+  
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+        
+    </nav><!-- End .breadcrumb-nav -->
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+   <style>
     body {
-        font-family: 'Times New Roman', Times, serif;
-        background-color: white;
-    }
-    .sidebar {
-        position: fixed;
-        top: 100px;
-        left: 0;
-        width: 250px;
-        height: 100%;
-        background-color: #fff; /* White sidebar background color */
-        color: #000; /* Black text color */
-        padding-top: 20px;
-        display: flex; /* Use flexbox */
-        flex-direction: column; /* Arrange items vertically */
-        align-items: center; /* Center items horizontally */
-    }
-    .sidebar ul {
-        list-style: none;
-        padding-left: 0;
-    }
-    .sidebar ul li {
-        padding: 10px;
-        border-bottom: none; /* Remove the border */
-    }
-    .sidebar ul li a {
-        color: #000; /* Black link text color */
-        text-decoration: none;
-    }
-    .sidebar ul li a:hover {
-        color: #555; /* Dark gray link hover color */
-    }
-    .content {
-        margin-left: 250px;
-        padding: 20px;
-    }
-    .content h2 {
-        margin-top: 200px;
-    }
-    .sidebar ul li a i {
-font-size: 20px; /* Adjust the size as needed */
-margin-right: 10px; /* Add some spacing between the icon and text */
-}
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .sidebar {
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 60%; /* Full height sidebar */
+            overflow-y: auto;
+            z-index: 100; /* Ensure it's above content */
+            transition: all 0.3s;
+            margin-top: 100px;
+        }
+        .nav-link {
+            color: #333;
+            padding: 10px 20px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            font-family: 'Times New Roman', Times, serif; 
+        }
+        .nav-link.active {
+            font-weight: bold;
+          
+            color: #fff;
+            border-left-color: #007bff;
+        }
+        .nav-link:hover {
+            text-decoration: none;
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            
+        }
 
-.sidebar ul li a {
-color: #000; /* Black link text color */
-text-decoration: none;
-font-size: 16px; /* Adjust the size as needed */
-}
-
-.sidebar ul li a:hover {
-color: #555; /* Dark gray link hover color */
-}
-
-   
-</style>
+        /* Media Query for Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%; /* Full width on smaller screens */
+                height: auto; /* Auto height to fit content */
+                position: relative; /* Return to normal flow */
+                border-right: none;
+            }
+            .content {
+                margin-left: 0; /* No margin on smaller screens */
+            }
+        }
+   </style>
 </head>
 <body>
-
 <div class="sidebar">
-<div style="margin-top: 50px; font-size: 24px;">My Account</div>
-<ul>
-    <li><a href="/userProfile"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-    <li><a href="/order"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-    <li><a href="/address"><i class="fas fa-map-marker-alt"></i> Address</a></li>
-    <li><a href="/wallet"><i class="fas fa-wallet"></i> Wallet</a></li>
-    <!-- <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sign out</a></li> -->
-</ul>
+    <ul class="nav flex-column">
+        <br><br><br><br><br>
+        <li class="nav-item">
+            <a class="nav-link" href="/userProfile">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/order">Orders</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/address">Address</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/wallet">Wallet</a>
+        </li>
+    </ul>
 </div>
-

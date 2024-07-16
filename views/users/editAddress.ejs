@@ -1,7 +1,7 @@
 <% var loggedin = true; %> <!-- You can set it to true or false based on your logic -->
 <%- include('../layouts/user-header.ejs', { loggedin: loggedin, user: user }) %>
-
 <%- include('../layouts/user-sidebar.ejs') %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +11,8 @@
     <style>
         /* Form Styling */
         form {
-            width: 500px; /* Adjust max-width as needed */
+            width: 100%;
+            max-width: 500px; /* Adjust max-width as needed */
             margin: 0 auto; /* Center the form horizontally */
             margin-top: 80px;
             padding: 20px;
@@ -39,17 +40,25 @@
         button:hover {
             background-color: #0056b3;
         }
+
         h2 {
             text-align: center; /* Align h2 element to the center */
-           
+        }
+
+        @media (max-width: 600px) {
+            form {
+                padding: 10px;
+            }
+
+            button {
+                padding: 8px;
+            }
         }
     </style>
 </head>
 <body>
-   
     <form action="/address/update/<%= address._id %>" method="POST">
-
-        <h2 style="font-family: 'Times New Roman', Times, serif;">Edit Address</h2> 
+        <h2 style="font-family: 'Times New Roman', Times, serif;">Edit Address</h2>
         <label for="street">Street:</label>
         <input type="text" id="street" name="street" value="<%= address.street %>" required><br>
 

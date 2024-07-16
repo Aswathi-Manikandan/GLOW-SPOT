@@ -114,11 +114,42 @@
             text-align: center;
             font-family: 'Times New Roman', Times, serif;
         }
-        .my-cart-header{
+        .my-cart-header {
             color: black;
+        }
+
+        @media (max-width: 768px) {
+            .my-cart-header {
+                display: none;
+            }
+            .my-item-details {
+                display: block;
+            }
+            .my-item-details .fourty,
+            .my-item-details .twenty {
+                display: block;
+                text-align: left;
+            }
+            .my-item-image {
+                display: block;
+                margin: 0 auto;
+            }
+            .remove-item-button {
+                display: block;
+                margin: 1em auto;
+                text-align: center;
+            }
+            .proceed-to-checkout-button {
+                text-align: center;
+            }
+            .totals {
+                text-align: center;
+            }
         }
     </style>
 </head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
 
 <body class="my-body">
 

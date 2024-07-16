@@ -1,150 +1,183 @@
-<style>
-    body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #000;
-    font-family: Arial, sans-serif;
-    font-family: 'Times New Roman', Times, serif;
-}
-
-.content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding-top: 20px;
-    position: absolute;
-    top: 20px;
-    font-family: 'Times New Roman', Times, serif;
-}
-
-.glow-text {
-    font-size: 4rem;
-    color: #fff;
-    text-align: center;
-    animation: fadeIn 3s forwards, slideInFromTop 3s forwards;
-    opacity: 0;
-    margin: 0;
-}
-
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideInFromTop {
-    from {
-        transform: translateY(-50px);
-    }
-    to {
-        transform: translateY(0);
-    }
-}
-
-
-.center-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    max-width: 1200px;
-    height: 440px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    box-shadow: 0 8px 32px 0 rgba(201, 202, 218, 0.37);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    overflow: hidden;
-    margin-top: 150px;
-}
-
-.half {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.half img {
-    max-width: 120%;
-    height: auto;
-    border-radius: 10px;
-}
-
-.login-form {
-    width: 100%;
-    max-width: 400px;
-    color: black;
-    text-align: center;
-}
-
-.login-form h1, .login-form h4, .login-form h5 {
-    color: black;
-}
-
-.login-form input[type="email"],
-.login-form input[type="password"],
-.login-form input[type="submit"] {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 30px;
-    background: white;
-    color: black;
-}
-
-.login-form input[type="submit"] {
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    width: 80px;
-    margin-left: 5px;
-}
-
-.login-form a {
-    color: white;
-    text-decoration: none;
-}
-
-.social-login-buttons {
-    margin-top: 20px;
-}
-
-.social-login-buttons button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: white;
-    color: black;
-    cursor: pointer;
-    font-family: 'Times New Roman', Times, serif;
-}
-
-.social-login-buttons button img {
-    margin-right: 10px;
-}
-
-</style>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Glow Spot</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding-top: 20px;
+            position: absolute;
+            top: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .glow-text {
+            font-size: 2.5rem;
+            color: #fff;
+            text-align: center;
+            animation: fadeIn 3s forwards, slideInFromTop 3s forwards;
+            opacity: 0;
+            margin: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                transform: translateY(-50px);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            max-width: 700px;
+            height: auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 8px 32px 0 rgba(201, 202, 218, 0.37);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            overflow: hidden;
+            margin-top: 50px;
+            padding: 20px;
+        }
+
+        .half {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .half img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .login-form {
+            width: 100%;
+            max-width: 400px;
+            color: black;
+            text-align: center;
+        }
+
+        .login-form h1, .login-form h4, .login-form h5 {
+            color: white;
+        }
+
+        .login-form input[type="email"],
+        .login-form input[type="password"],
+        .login-form input[type="submit"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            background: white;
+            color: black;
+        }
+
+        .login-form input[type="submit"] {
+            background-color: black;
+            color: white;
+            cursor: pointer;
+            width: 100px;
+            margin-left: 5px;
+        }
+
+        .login-form a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .social-login-buttons {
+            margin-top: 20px;
+        }
+
+        .social-login-buttons button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: white;
+            color: black;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .social-login-buttons button img {
+            margin-right: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .center-container {
+                flex-direction: row;
+                height: 440px;
+            }
+
+            .half {
+                flex: 1;
+            }
+
+            .half img {
+                max-width: 120%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .glow-text {
+                font-size: 2rem;
+            }
+
+            .center-container {
+                width: 90%;
+                padding: 10px;
+            }
+
+            .login-form input[type="email"],
+            .login-form input[type="password"],
+            .login-form input[type="submit"] {
+                width: 100%;
+            }
+
+            .login-form input[type="submit"] {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="content">

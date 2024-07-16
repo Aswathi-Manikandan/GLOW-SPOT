@@ -3,72 +3,133 @@
 
 <style>
     .wishlist-empty-message {
-    text-align: center;
-    color: red;
-    font-size: x-large;
-    font-family: 'Times New Roman', Times, serif;
-}
-body{
-    font-family: 'Times New Roman', Times, serif;
-}
-
+        text-align: center;
+        color: red;
+        font-size: x-large;
+        font-family: 'Times New Roman', Times, serif;
+    }
+    body {
+        font-family: 'Times New Roman', Times, serif;
+    }
+    .table-wishlist img {
+        max-width: 70px;
+        height: auto;
+    }
+    .table-wishlist .product-col, .table-wishlist .price-col, .table-wishlist .stock-col, .table-wishlist .remove-col, .table-wishlist .buy-now-col {
+        text-align: center;
+    }
+    .discounted-price {
+        text-decoration: line-through;
+        color: red;
+        margin-left: 5px;
+    }
+    .out-of-stock {
+        color: red;
+    }
+    .in-stock {
+        color: green;
+    }
+    @media only screen and (max-width: 600px) {
+        .table-wishlist {
+            font-size: 12px;
+        }
+        .wishlist-empty-message {
+            font-size: large;
+        }
+        .table-wishlist thead {
+            display: none;
+        }
+        .table-wishlist tbody tr {
+            display: block;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .table-wishlist td {
+            display: block;
+            text-align: right;
+            padding-left: 50%;
+            position: relative;
+        }
+        .table-wishlist td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 10px;
+            text-align: left;
+        }
+        .table-wishlist .product-col {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .table-wishlist .product-col img {
+            max-width: 50px;
+            margin-right: 10px;
+        }
+        .table-wishlist .product-col .product-title {
+            flex-grow: 1;
+            text-align: left;
+        }
+        .table-wishlist .remove-col, .table-wishlist .buy-now-col {
+            text-align: center;
+            margin-top: 10px;
+        }
+    }
 </style>
 
 <main class="main">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
             <h1 class="page-title">Wishlist<span>Shop</span></h1>
-        </div><!-- End .container -->
-    </div><!-- End .page-header -->
+        </div>
+    </div>
 
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/category">Shop</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
             </ol>
-        </div><!-- End .container -->
-    </nav><!-- End .breadcrumb-nav -->
+        </div>
+    </nav>
 
     <div class="page-content">
         <div class="container">
             <% if (wishlist.length === 0) { %>
-                <!-- Wishlist is empty -->
                 <div class="wishlist-empty-message">
                     Wishlist Empty
                 </div>
             <% } else { %>
-                <!-- Wishlist is not empty, display wishlist table -->
+                
                 <table class="table table-wishlist table-mobile">
+                    <br><br>
                     <thead>
                         <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Stock Status</th>
+                            <th style="color: black;">Product</th>
+                            <th style="color: black;">Price</th>
+                            <th style="color: black;">Stock Status</th>
                             <th></th>
-                            <th>Action</th>
+                            <th style="color: black;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% wishlist.forEach(item => { %>
                             <tr>
-                                <td class="product-col">
+                                <td class="product-col" data-label="Product">
                                     <div class="product">
                                         <figure class="product-media">
                                             <a href="#">
-                                                <img src="<%= item.product.pictures[0] %>" alt="Product image"> <!-- Assuming pictures is the field in the product object that stores the image URLs -->
+                                                <img src="<%= item.product.pictures[0] %>" alt="Product image">
                                             </a>
                                         </figure>
-
                                         <h3 class="product-title">
-                                            <a href="#"><%= item.product.name %></a> <!-- Assuming name is the field in the product object that stores the product name -->
-                                        </h3><!-- End .product-title -->
-                                    </div><!-- End .product -->
+                                            <a href="#"><%= item.product.name %></a>
+                                        </h3>
+                                    </div>
                                 </td>
-                                
-                                <td class="price-col">
-                                    <!-- Check if there is a discount and show the discounted price if available -->
+                                <td class="price-col" data-label="Price">
                                     <% if (item.product.discount > 0) { %>
                                         $<%= item.product.discount.toFixed(2) %>
                                         <span class="discounted-price">($<%= item.product.price.toFixed(2) %>)</span>
@@ -76,22 +137,19 @@ body{
                                         $<%= item.product.price.toFixed(2) %>
                                     <% } %>
                                 </td>
-                                <td class="stock-col">
+                                <td class="stock-col" data-label="Stock Status">
                                     <% if (item.product.quantity === 0) { %>
                                         <span class="out-of-stock">Out of stock</span>
                                     <% } else { %>
                                         <span class="in-stock">In stock</span>
                                     <% } %>
                                 </td>
-                                
-                                
-                                <td class="remove-col">
-                                    <!-- Remove button to remove product from wishlist -->
+                                <td class="remove-col" data-label="Remove">
                                     <button class="btn btn-remove removeFromWishlistButton" data-product-id="<%= item.product._id %>">
-                                        <i class="fas fa-trash"></i> <!-- Use a delete icon -->
+                                        <i class="fas fa-trash"></i>
                                     </button>
-                                </td> 
-                                <td class="buy-now-col">
+                                </td>
+                                <td class="buy-now-col" data-label="Action">
                                     <button class="btn btn-buy-now buyNowButton" data-product-id="<%= item.product._id %>">
                                         Buy Now
                                     </button>
@@ -99,21 +157,11 @@ body{
                             </tr>
                         <% }); %>
                     </tbody>
-                </table><!-- End .table table-wishlist -->
+                </table>
             <% } %>
-            <div class="wishlist-share">
-                <div class="social-icons social-icons-sm mb-2">
-                    <label class="social-label">Share on:</label>
-                    <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
-                    <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
-                    <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
-                    <a href="#" class="social-icon" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
-                    <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
-                </div><!-- End .soial-icons -->
-            </div><!-- End .wishlist-share -->
-        </div><!-- End .container -->
-    </div><!-- End .page-content -->
-</main><!-- End .main -->
+        </div>
+    </div>
+</main>
 
 <script>
     async function removeFromWishlist(productId) {
@@ -129,11 +177,9 @@ body{
                 throw new Error('Failed to remove product from wishlist');
             }
 
-            // Refresh the page or update the wishlist display after successful removal
-            location.reload(); // This will refresh the page, you can replace it with your desired action
+            location.reload();
         } catch (error) {
             console.error('Error removing product from wishlist:', error);
-            // Handle error here, e.g., show an error message to the user
         }
     }
 
@@ -150,11 +196,9 @@ body{
                 throw new Error('Failed to add product to cart');
             }
 
-            // Redirect to checkout page after adding product to cart
             window.location.href = '/checkout';
         } catch (error) {
             console.error('Error adding product to cart and redirecting to checkout:', error);
-            // Handle error here, e.g., show an error message to the user
         }
     }
 
@@ -162,7 +206,7 @@ body{
         const removeFromWishlistButtons = document.querySelectorAll('.removeFromWishlistButton');
         removeFromWishlistButtons.forEach(button => {
             button.addEventListener('click', function() {
-                const productId = button.getAttribute('data-product-id'); // Extract product ID from data attribute
+                const productId = button.getAttribute('data-product-id');
                 removeFromWishlist(productId);
             });
         });
@@ -170,12 +214,15 @@ body{
         const buyNowButtons = document.querySelectorAll('.buyNowButton');
         buyNowButtons.forEach(button => {
             button.addEventListener('click', function() {
-                const productId = button.getAttribute('data-product-id'); // Extract product ID from data attribute
+                const productId = button.getAttribute('data-product-id');
                 buyNow(productId);
             });
         });
     });
 </script>
 
+<!-- Include Font Awesome library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<%- include('../layouts/footer.ejs') %>
 </body>
 </html>

@@ -78,6 +78,22 @@ const authenticateUser = async (req, res, next) => {
     }
 };
 
+// auth.js
+
+exports.ensureAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login'); // Redirect to login if not authenticated
+};
+
+exports.ensureGuest = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        res.redirect('/'); // Redirect to home if already authenticated
+    } else {
+        return next();
+    }
+};
 
 
 module.exports = {
