@@ -44,7 +44,7 @@
                             <h2 class="text-center mb-0">Edit Product</h2>
                         </div>
                         <div class="card-body">
-                            <form action="/admin/products/edit/<%= product._id %>" method="POST" enctype="multipart/form-data">
+                            <form action="/admin/products/edit/<%= product._id %>" method="POST" enctype="multipart/form-data" id="editProductForm">
                                 <div class="form-group">
                                     <label>Product Name</label>
                                     <input type="text" name="name" id="name" class="form-control" value="<%= product.name %>">
@@ -84,7 +84,6 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="image-container">
-                                                <!-- HTML code -->
                                                 <!-- Add delete buttons for existing images -->
                                                 <% if(product.pictures && product.pictures.length > 0) { %>
                                                     <% product.pictures.forEach((image, index) => { %>
@@ -103,7 +102,7 @@
                                                 <% for(let i = product.pictures.length; i < 4; i++) { %>
                                                     <div class="form-group new-image-input">
                                                         <label>New Image <%= i + 1 %></label>
-                                                        <input type="file" name="images" class="form-control">
+                                                        <input type="file" name="images" class="form-control image-input" accept="image/jpeg, image/png, image/gif">
                                                     </div>
                                                 <% } %>
                                             </div>
@@ -151,11 +150,26 @@
                 if (currentImageCount < 4) {
                     const newImageInput = document.createElement('div');
                     newImageInput.classList.add('form-group', 'new-image-input');
-                    newImageInput.innerHTML = `<label>New Image ${currentImageCount + 1}</label><input type="file" name="images" class="form-control">`;
+                    newImageInput.innerHTML = `<label>New Image ${currentImageCount + 1}</label><input type="file" name="images" class="form-control image-input" accept="image/jpeg, image/png, image/gif">`;
                     newImageInputs.appendChild(newImageInput);
                 }
             }
         });
+    });
+
+    // Validate file types for new image inputs
+    document.getElementById('editProductForm').addEventListener('change', (e) => {
+        if (e.target.classList.contains('image-input')) {
+            const file = e.target.files[0];
+            if (file) {
+                const fileType = file.type.toLowerCase();
+                const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!validImageTypes.includes(fileType)) {
+                    alert('Invalid file type. Only JPG, PNG, and GIF files are allowed.');
+                    e.target.value = ''; 
+                }
+            }
+        }
     });
 </script>
 </body>

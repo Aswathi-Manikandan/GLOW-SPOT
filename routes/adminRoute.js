@@ -1,10 +1,7 @@
 // routes/adminRouter.js
 const express = require('express');
 const adminRoute = express();
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const multer = require('multer');
-const path = require('path');
+
 const adminController = require('../controllers/adminController');
 const categoryController = require('../controllers/categoryController');
 const productController = require('../controllers/productController');
@@ -14,22 +11,11 @@ const couponController = require('../controllers/couponController');
 const salesController = require('../controllers/salesController');
 
 const auth = require('../middleware/adminAuth');
+const upload = require('../config/multerConfig'); 
 
-// Set view engine and views directory
+// Setting view engine and views directory
 adminRoute.set('view engine', 'ejs');
 adminRoute.set('views', './views/admin');
-
-// Multer setup
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../public/product_images'));
-  },
-  filename: function (req, file, cb) {
-    const name = Date.now() + '-' + file.originalname;
-    cb(null, name);
-  },
-});
-const upload = multer({ storage: storage });
 
 // Routes
 adminRoute.get('/', auth.isLogout, adminController.loadLogin);

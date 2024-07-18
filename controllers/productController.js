@@ -6,6 +6,7 @@ const Coupon = require('../models/couponModel');
 const Offer = require("../models/offerModel");
 const Sharp = require("sharp");
 const path = require("path");
+const fs = require('fs');
 
 const loadProducts = async (req, res) => {
     try {
@@ -115,7 +116,7 @@ const loadEditProduct = async (req, res) => {
 const editProduct = async (req, res) => {
     try {
         const id = req.params.id;
-        const { name, category, price, quantity, description } = req.body;
+        const { name, category, price, quantity, description, deletedImages } = req.body;
 
         let product = await Product.findById(id);
 
@@ -123,46 +124,48 @@ const editProduct = async (req, res) => {
             return res.status(404).json({ error: 'Product not found' });
         }
 
-      
-
+        // Update product details
         product.name = name;
         product.category = category;
         product.price = price;
         product.quantity = quantity;
         product.description = description;
-       
 
         // Handle deleting existing images
-        if (req.body.deletedImages && req.body.deletedImages.length > 0) {
-            // Remove deleted images from the 'pictures' array
-            product.pictures = product.pictures.filter((image, index) => !req.body.deletedImages.includes(index.toString()));
+        if (deletedImages && deletedImages.length > 0) {
+            const deletedImagesArray = Array.isArray(deletedImages) ? deletedImages : [deletedImages];
+
+            deletedImagesArray.forEach((index) => {
+                const imagePath = path.join(__dirname, '../public', product.pictures[index]);
+                if (fs.existsSync(imagePath)) {
+                    fs.unlinkSync(imagePath);
+                }
+            });
+
+            product.pictures = product.pictures.filter((image, index) => !deletedImagesArray.includes(index.toString()));
         }
 
         // Handle adding new images
         if (req.files && req.files.length > 0) {
             const newImages = [];
 
-            // Process each new image
             for (const file of req.files) {
                 const fileExtension = path.extname(file.originalname).toLowerCase();
-                
-                // Check if file extension is not .pdf
-                if (fileExtension === '.pdf') {
-                    return res.status(400).send('Invalid file type. PDF files are not allowed.');
+
+                if (!['.jpg', '.jpeg', '.png', '.gif'].includes(fileExtension)) {
+                    return res.status(400).send('Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.');
                 }
 
-                // Process and resize the image
                 const resizedFilename = `resized-${file.filename}`;
                 const resizedPath = path.join(__dirname, '../public/product_images', resizedFilename);
 
                 await Sharp(file.path)
-                    .resize({ height: 700, width: 500, fit: 'fill' })
+                    .resize({ height: 600, width: 650, fit: 'fill' })
                     .toFile(resizedPath);
 
                 newImages.push(`/product_images/${resizedFilename}`);
             }
 
-            // Concatenate new images with existing ones
             product.pictures = product.pictures.concat(newImages);
         }
 
@@ -174,6 +177,8 @@ const editProduct = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
+
 const deleteImage = async (req, res) => {
     try {
         const id = req.params.id;
