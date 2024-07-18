@@ -160,7 +160,7 @@ const editProduct = async (req, res) => {
                 const resizedPath = path.join(__dirname, '../public/product_images', resizedFilename);
 
                 await Sharp(file.path)
-                    .resize({ height: 600, width: 650, fit: 'fill' })
+                    .resize({ height: 550, width: 600, fit: 'fill' })
                     .toFile(resizedPath);
 
                 newImages.push(`/product_images/${resizedFilename}`);
